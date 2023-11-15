@@ -20,6 +20,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: mongoadmin
       MONGO_INITDB_ROOT_PASSWORD: mongoadminpassword
+      MONGO_INITDB_DATABASE: gym_management_system
     ports:
       - "27017:27017"
     volumes:

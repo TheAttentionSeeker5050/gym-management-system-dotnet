@@ -19,6 +19,9 @@ namespace gym_management_system.Controllers
 
         public IActionResult Index()
         {
+            var user = new User();
+            var userDBHandler = new UserDBHandler();
+            userDBHandler.createUser(user);
             return View();
         }
 
