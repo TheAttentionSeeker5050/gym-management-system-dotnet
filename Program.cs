@@ -1,4 +1,17 @@
+using gym_management_system;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// call add environment variables 
+var root = Directory.GetCurrentDirectory();
+var dotenv = Path.Combine(root, ".env");
+DotEnv.Load(dotenv);
+
+// specify environment variables as the only source of configuration provider
+builder.Configuration.AddEnvironmentVariables().Build();
+
+
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
