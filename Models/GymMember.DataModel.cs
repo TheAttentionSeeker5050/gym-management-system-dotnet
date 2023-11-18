@@ -15,13 +15,13 @@ namespace gym_management_system.Models
         public string FullName { get; set; }
         public string PhoneNumber { get; set; }
         public string Address { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public DateTime DateJoined { get; set;}
+        public DateTime DateOfBirth { get; set; } = new DateTime(2000, 1, 1);
+        public DateTime DateJoined { get; set;} = DateTime.Now;
 
         // an object array called membership and biometrics, default as empty array
-        public Membership[] Memberships { get; set; } = new Membership[0];
+        public Membership[] Memberships { get; set; }
 
-        public BioMetric[] BioMetrics { get; set; } = new BioMetric[0];
+        public BioMetric[] BioMetrics { get; set; }
 
         public Bill[] Bills { get; set; } = new Bill[0];
 
@@ -36,7 +36,6 @@ namespace gym_management_system.Models
 
         public const string BillTypeMembershipMonthly = "Monthly";
         public const string BillTypeMembershipYearly = "Yearly";
-
 
     }
 
