@@ -2,6 +2,10 @@
 /*import site.css root code below */
 @import url("./site.css");
 
+.alert-container {
+    max-width: 700px;
+    margin: 20px auto;
+}
 
 .custom-auth-form {
     max-width: 700px;
