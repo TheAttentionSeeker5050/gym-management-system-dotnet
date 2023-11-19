@@ -1,4 +1,4 @@
-﻿@model gym_management_system.Models.User
+﻿@model gym_management_system.Models.UserLogin
 
 @{
     ViewData["Title"] = "Login";
@@ -30,12 +30,15 @@
         @* if on mobile, full width, if on medium screen device, 75% and desktop 50% *@
         <div class="form-group text-start">
             <label for="loginEmail" class="">Email address</label>
-            <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Enter email" asp-for="Email">
+            <input type="text" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Enter email" asp-for="Email">
+            <span class="text-danger field-validation-valid" asp-validation-for="Email"></span>
         </div>
         <div class="form-group text-start">
             <label for="loginPassword">Password</label>
             <input type="password" class="form-control" id="loginPassword" placeholder="Password" asp-for="UserPassword">
+            <span class="text-danger field-validation-valid" asp-validation-for="UserPassword"></span>
         </div>
+
         <button type="submit" class="btn btn-primary my-4 custom-btn-primary" asp-controller="Auth" asp-action="LoginSubmit">Submit</button>
     </form>
 

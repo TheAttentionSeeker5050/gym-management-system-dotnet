@@ -33,8 +33,13 @@ namespace gym_management_system.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> LoginSubmitAsync(User user)
+        public async Task<IActionResult> LoginSubmitAsync(UserLogin user)
         {
+            // verify model state form is valid
+            if (!ModelState.IsValid)
+            {
+                return View("Login");
+            }
 
             try
             {
