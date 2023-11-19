@@ -1,8 +1,41 @@
 ﻿@{
     ViewData["Title"] = "Register";
+    ViewData["CustomCss"] = "~/css/authViews.css";
 }
-<div class="text-center my-5">
+
+<div class="text-center my-5 px-3 container">
     <h1>Zeus Gym - Register</h1>
     <h2>Employee Portal</h2>
+
+    @* make a register form using bootstrap styles *@
+    <form method="POST" class="d-flex flex-column gap-2 custom-auth-form">
+        @* if on mobile, full width, if on medium screen device, 75% and desktop 50% *@
+        <div class="form-group text-start">
+            <label for="registerEmail" class="">Email address</label>
+            <input type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp" placeholder="Enter email">
+        </div>
+
+        <div class="form-group text-start">
+            <label for="registerUsername" class="">Username</label>
+            <input type="text" class="form-control" id="registerUsername" aria-describedby="usernameHelp" placeholder="Enter username">
+        </div>
+
+        <div class="form-group text-start">
+            <label for="registerFullName" class="">Full Name</label>
+            <input type="text" class="form-control" id="registerFullName" aria-describedby="fullNameHelp" placeholder="Enter full name">
+        </div>
+
+        <div class="form-group text-start">
+            <label for="registerPassword">Password</label>
+            <input type="password" class="form-control" id="registerPassword" placeholder="Password">
+        </div>
+
+        <div class="form-group text-start">
+            <label for="registerConfirmPassword">Confirm Password</label>
+            <input type="password" class="form-control" id="registerConfirmPassword" placeholder="Confirm Password">
+        </div>
+
+        <button type="submit" class="btn btn-primary my-3 custom-btn-primary mx-auto px-4" asp-controller="Auth" asp-action="Register">Submit</button>
+    </form>
 
 </div>

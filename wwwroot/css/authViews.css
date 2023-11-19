@@ -1,0 +1,27 @@
+﻿/* get the colors from site.css */
+/*import site.css root code below */
+@import url("./site.css");
+
+
+.custom-auth-form {
+    max-width: 700px;
+    margin: 45px auto;
+    border: solid var(--primary) 2px;
+    padding: 50px 20px 20px 20px;
+    border-radius: 10px;
+}
+
+.custom-auth-form .form-control {
+    border: solid var(--primary-light) 1px;
+    
+}
+
+.custom-auth-form .form-control:hover, .custom-auth-form .form-control:focus {
+    border: solid var(--primary-light) 1px;
+    outline: solid var(--primary-light) 1px;
+    box-shadow: none;
+}
+
+.custom-auth-form .form-control {
+    background-color: var(--light-gray);
+}

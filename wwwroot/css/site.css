@@ -30,7 +30,9 @@ body {
     --warning: #faa307;
     --danger: #d00000;
     --light: #fcbf49;
-    --gray: #e7e7e7;
+    --gray: #cecece;
+    --light-gray: rgb(245, 242, 242);
+    --dark-gray: #4d4d4d;
     --dark: #003049;
 }
 
@@ -56,13 +58,13 @@ html {
     color: var(--gray);
 }
 
-.custom-btn-1 {
+.custom-btn-1, .custom-btn-primary {
     background-color: var(--primary);
     color: white;
     border: 1px solid var(--primary);
 }
 
-.custom-btn-1:hover {
+.custom-btn-1:hover, .custom-btn-primary:hover {
     background-color: var(--primary-light);
     color: white;
     border: 1px solid var(--primary-light);
