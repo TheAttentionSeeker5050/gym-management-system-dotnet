@@ -11,12 +11,26 @@ namespace gym_management_system.Controllers
             return View();
         }
 
+        [HttpPost]
+        [Route("login")]
+        public IActionResult LoginSubmit()
+        {
+            return View("Login");
+        }
+
 
         [HttpGet]
         [Route("register")]
         public IActionResult Register()
         {
             return View();
+        }
+
+        [HttpPost]
+        [Route("register")]
+        public IActionResult RegisterSubmit()
+        {
+            return View("Register");
         }
 
         [HttpGet]

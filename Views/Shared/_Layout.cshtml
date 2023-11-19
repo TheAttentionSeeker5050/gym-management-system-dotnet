@@ -6,6 +6,12 @@
     <title>@ViewData["Title"] - Gym Management System</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @* add a custom styling depending on the window type, use viewdata to get the path *@
+@if (ViewData["CustomCss"] != null)
+    {
+        <link rel="stylesheet" href="@ViewData["CustomCss"]" asp-append-version="true" />
+    }
+
     
 </head>
 <body class="">
