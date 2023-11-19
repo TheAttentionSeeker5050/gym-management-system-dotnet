@@ -74,7 +74,7 @@ namespace gym_management_system.Models
             }
         }
 
-        public void loginUser(User user)
+        public User loginUser(User user)
         {
             User userResult = new User();
             try
@@ -115,12 +115,15 @@ namespace gym_management_system.Models
                     throw new Exception("Incorrect user credentials");
                 }
 
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 throw new Exception(e.Message);
+
             }
 
+            return userResult;
 
         }
 

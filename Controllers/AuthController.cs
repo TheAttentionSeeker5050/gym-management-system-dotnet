@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using gym_management_system.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace gym_management_system.Controllers
 {
     public class AuthController : Controller
     {
+
+        // private fields ---------------------------------------------
+        
         [HttpGet]
         [Route("login")]
         public IActionResult Login()
@@ -29,7 +33,10 @@ namespace gym_management_system.Controllers
             try
             {
                 // attempt login the user with the login model method. and user credentials in form
-                user.loginUser(user);
+                user = user.loginUser(user);
+
+                // now add the user to the session
+                
             } catch (Exception e)
             {
                 TempData["error"] = e.Message;

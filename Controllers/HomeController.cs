@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using System;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace gym_management_system.Controllers
 {
@@ -16,6 +18,7 @@ namespace gym_management_system.Controllers
 
             _logger = logger;
         }
+
 
         public IActionResult Index()
         {
