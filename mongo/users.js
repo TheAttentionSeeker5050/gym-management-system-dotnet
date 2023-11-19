@@ -16,19 +16,22 @@ db = db.getSiblingDB('gym_management_system');
 db.users.insertMany([
     {
         "UserName": "admin",
-        "UserPassword": "admin",
+        // password is admin
+        "UserPassword": "XdnyLLNYhVx3BEF/INK+S6YfqoNf7fSx5IWPiz5bNEk=", 
         "Email": "admin@email.com",
         "FullName": "Mr. Admin"
     },
     {
         "UserName": "employee1",
-        "UserPassword": "admin",
+        // password is admin
+        "UserPassword": "XdnyLLNYhVx3BEF/INK+S6YfqoNf7fSx5IWPiz5bNEk=",
         "Email": "employee1@email.com",
         "FullName": "Mr. Employee 1"
     },
     {
         "UserName": "employee1",
-        "UserPassword": "admin",
+        // password is admin
+        "UserPassword": "XdnyLLNYhVx3BEF/INK+S6YfqoNf7fSx5IWPiz5bNEk=",
         "Email": "employee1@email.com",
         "FullName": "Mr. Employee 1"
     }
