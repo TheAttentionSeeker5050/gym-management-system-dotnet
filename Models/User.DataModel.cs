@@ -16,22 +16,29 @@ namespace gym_management_system.Models
 
         private DBConnection _connection = new DBConnection();
         // constructor
-        public User() { }
+        public User() {
+            _id = "";
+            _userName = "";
+            _userPassword = "";
+            _email = "";
+            _fullName  = "";
+
+        }
 
         // private fields ---------------------------------------------
-        private string id = "";
-        private string userName = "";
-        private string userPassword = "";
-        private string email = "";
-        private string fullName = "";
+        private string _id;
+        private string _userName;
+        private string _userPassword;
+        private string _email;
+        private string _fullName;
 
 
         // public getter and setter methods ------------------------------
-        public string Id { get; set; }
-        public string UserName { get; set; }
-        public string UserPassword { get; set; }
-        public string Email { get; set; }
-        public string FullName { get; set; }
+        public string Id { get { return _id; } set { _id = value; } }
+        public string UserName { get { return _userName; } set { _userName = value; } }
+        public string UserPassword { get { return _userPassword; } set { _userPassword = value; } }
+        public string Email { get { return _email; } set { _email = value; } }
+        public string FullName { get { return _fullName; } set { _fullName = value; } }
 
         // public methods -----------------------------------------------
         public void createUser(User user)
@@ -43,7 +50,7 @@ namespace gym_management_system.Models
                 var db = client.GetDatabase("gym_management_system");
                 var collection = db.GetCollection<User>("users");
                 // collection.InsertOne(user);
-                Console.WriteLine("User created");
+                // Console.WriteLine("User created");
             }
             catch (Exception e)
             {
