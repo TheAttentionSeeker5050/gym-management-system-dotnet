@@ -1,4 +1,4 @@
-html {
+/*html {
   font-size: 14px;
 }
 
@@ -15,4 +15,61 @@ html {
 
 body {
   margin-bottom: 60px;
+}*/
+
+/* global styles */
+
+/* add color pallete vars */
+:root {
+    --primary: #f77f00;
+    --primary-light: #faa307;
+    --secondary: #d62828;
+    --secondary-light: #fc2f00;
+    --success: #74c69d;
+    --info: #17a2b8;
+    --warning: #faa307;
+    --danger: #d00000;
+    --light: #fcbf49;
+    --gray: #e7e7e7;
+    --dark: #003049;
+}
+
+/* set default font 1.2 times bigger */
+html {
+    font-size: 1.2rem;
+}
+
+.navbar-custom {
+    background-color: var(--primary);
+}
+
+/* Optional: Change the text color if needed */
+.navbar-custom .navbar-brand, .navbar-custom .nav-link, #list-icon {
+    color: white;
+}
+
+#list-icon {
+    font-size: 2.5rem;
+}
+
+.navbar-custom .nav-link:hover {
+    color: var(--gray);
+}
+
+.custom-btn-1 {
+    background-color: var(--primary);
+    color: white;
+    border: 1px solid var(--primary);
+}
+
+.custom-btn-1:hover {
+    background-color: var(--primary-light);
+    color: white;
+    border: 1px solid var(--primary-light);
+}
+
+/* media query for below lg breakpoint */
+@media (max-width: 991.98px) {
+    .navbar-custom .nav-link {
+    color: black;
 }
