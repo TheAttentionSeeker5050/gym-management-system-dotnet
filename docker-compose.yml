@@ -1,6 +1,14 @@
 version: '3.8'
 
 services:
+  # Adminer for database management
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    
+    
   # MySQL Service
   mysql:
     image: mysql:latest
@@ -21,18 +29,12 @@ services:
       MONGO_INITDB_ROOT_USERNAME: mongoadmin
       MONGO_INITDB_ROOT_PASSWORD: mongoadminpassword
       MONGO_INITDB_DATABASE: gym_management_system
+      MONGO_INITDB_SCRIPT: /mongo/*.js
     ports:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
-
-  # Adminer for database management
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - "8080:8080"
-
+      
 volumes:
   mysql_data:
   mongodb_data:
