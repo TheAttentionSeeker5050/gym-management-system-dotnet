@@ -7,22 +7,23 @@
 <div class="text-center my-5 px-3 container">
     <h1>Zeus Gym - Login</h1>
     <h2>Employee Portal</h2>
+    <div class="alert-container">
+        @* if there is an error, show it *@
+        @if (ViewData["error"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewData["error"]
+            </div>
+        }
 
-    @* if there is an error, show it *@
-    @if (ViewData["error"] != null)
-    {
-        <div class="alert alert-danger" role="alert">
-            @ViewData["error"]
-        </div>
-    }
-
-    @* if feedback viewdata, show it as alert success *@
-    @if (ViewData["feedback"] != null)
-    {
-        <div class="alert alert-success" role="alert">
-            @ViewData["feedback"]
-        </div>
-    }
+        @* if feedback viewdata, show it as alert success *@
+        @if (ViewData["feedback"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewData["feedback"]
+            </div>
+        }
+    </div>
 
     @* make a login form using bootstrap styles *@
     <form method="POST" class="col custom-auth-form">
