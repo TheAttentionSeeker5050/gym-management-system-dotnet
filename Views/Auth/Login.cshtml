@@ -1,4 +1,6 @@
-﻿@{
+﻿@model gym_management_system.Models.User
+
+@{
     ViewData["Title"] = "Login";
     ViewData["CustomCss"] = "~/css/authViews.css";
 }
@@ -6,16 +8,32 @@
     <h1>Zeus Gym - Login</h1>
     <h2>Employee Portal</h2>
 
+    @* if there is an error, show it *@
+    @if (ViewData["error"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewData["error"]
+        </div>
+    }
+
+    @* if feedback viewdata, show it as alert success *@
+    @if (ViewData["feedback"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @ViewData["feedback"]
+        </div>
+    }
+
     @* make a login form using bootstrap styles *@
     <form method="POST" class="col custom-auth-form">
         @* if on mobile, full width, if on medium screen device, 75% and desktop 50% *@
         <div class="form-group text-start">
             <label for="loginEmail" class="">Email address</label>
-            <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Enter email">
+            <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Enter email" asp-for="Email">
         </div>
         <div class="form-group text-start">
             <label for="loginPassword">Password</label>
-            <input type="password" class="form-control" id="loginPassword" placeholder="Password">
+            <input type="password" class="form-control" id="loginPassword" placeholder="Password" asp-for="UserPassword">
         </div>
         <button type="submit" class="btn btn-primary my-4 custom-btn-primary" asp-controller="Auth" asp-action="LoginSubmit">Submit</button>
     </form>

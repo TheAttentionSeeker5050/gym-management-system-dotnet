@@ -17,7 +17,8 @@ namespace gym_management_system.Models
         private DBConnection _connection = new DBConnection();
         // constructor
         public User() {
-            _id = "";
+            // make id a mongo ObjectId
+            _id = ObjectId.GenerateNewId();
             _userName = "";
             _userPassword = "";
             _email = "";
@@ -26,7 +27,7 @@ namespace gym_management_system.Models
         }
 
         // private fields ---------------------------------------------
-        private string _id;
+        private ObjectId _id;
         private string _userName;
         private string _userPassword;
         private string _email;
@@ -34,7 +35,7 @@ namespace gym_management_system.Models
 
 
         // public getter and setter methods ------------------------------
-        public string Id { get { return _id; } set { _id = value; } }
+        public ObjectId Id { get { return _id; } set { _id = value; } }
         public string UserName { get { return _userName; } set { _userName = value; } }
         public string UserPassword { get { return _userPassword; } set { _userPassword = value; } }
         public string Email { get { return _email; } set { _email = value; } }
@@ -62,26 +63,41 @@ namespace gym_management_system.Models
         {
             try
             {
+                Console.WriteLine("Mongo connection string: " + _connection.MONGO_CONN_STRING);
+
+                // initialize the mongo client and get the database and collection
                 var client = new MongoClient(_connection.MONGO_CONN_STRING);
                 var db = client.GetDatabase("gym_management_system");
                 var collection = db.GetCollection<User>("users");
-                /*var filter = Builders<User>.Filter.Eq("email", user.email);
-                var result = collection.Find(filter).ToList();
-                if (result.Count == 0)
+
+                Console.WriteLine("User email: " + user.Email);
+
+                // add filters fpr searching the user
+                var filter = Builders<User>.Filter.Eq("Email", user.Email);
+                var userResult = collection.Find(filter).FirstOrDefault();
+
+                Console.WriteLine("User result: " + userResult);
+
+                if (userResult.Id == null)
                 {
-                    Console.WriteLine("User not found");
+                    throw new Exception("Incorrect user credentials");
                 }
                 else
                 {
-                    Console.WriteLine("User found");
-                }*/
+                    if (userResult.UserPassword != user.UserPassword)
+                    {
+                        throw new Exception("Incorrect user credentials");
+                    }
+                }
 
                 Console.WriteLine("User logged in");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                throw new Exception("Something went wrong: Could not log in user");
             }
+
         }
 
 

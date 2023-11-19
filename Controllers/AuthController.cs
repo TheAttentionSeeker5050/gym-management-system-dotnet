@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using gym_management_system.Models;
 
 namespace gym_management_system.Controllers
 {
@@ -8,14 +9,37 @@ namespace gym_management_system.Controllers
         [Route("login")]
         public IActionResult Login()
         {
+            // check feedback and error messages from the login form
+            if (TempData["feedback"] != null)
+            {
+                ViewBag.feedback = TempData["feedback"];
+            }
+            if (TempData["error"] != null)
+            {
+                ViewBag.error = TempData["error"];
+            }
             return View();
         }
 
         [HttpPost]
         [Route("login")]
-        public IActionResult LoginSubmit()
+        public IActionResult LoginSubmit(User user)
         {
-            return View("Login");
+
+            try
+            {
+                // attempt login the user with the login model method. and user credentials in form
+                user.loginUser(user);
+            } catch (Exception e)
+            {
+                TempData["error"] = e.Message;
+                return RedirectToAction("Login");
+            }
+
+            // if login is successful, redirect to the dashboard
+            TempData["feedback"] = "Login successful";
+            return RedirectToAction("Login");
+            // return RedirectToAction("Index", "Home");
         }
 
 
