@@ -20,6 +20,62 @@ namespace gym_management_system.Models
 {
     // this is a model class for the employee user, and this is a data class
 
+    public class MyAuthMethods
+    {
+        // hash password method for hashing passwords
+        public string hashPassword(string password, byte[] encryption_salt)
+        {
+            try
+            {
+
+                // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
+                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                    password: password!,
+                    salt: encryption_salt,
+                    prf: KeyDerivationPrf.HMACSHA256,
+                    iterationCount: 100000,
+                    numBytesRequested: 256 / 8));
+
+
+                return hashed;
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception("Something went wrong: Could not hash password");
+            }
+        }
+
+        // compare passwords method for comparing passwords
+        public bool ComparePasswords(string inPassword, string hashedDBPassword, byte[] encryption_salt)
+        {
+            // this method compares the password entered by the user (inPassword) with the hashed password in the database hashedDBPassword
+            try
+            {
+                string hashedInPassword = this.hashPassword(inPassword, encryption_salt);
+
+                
+                // compare the two hashed passwords, return true if they are the same, false if not
+                if (hashedInPassword == hashedDBPassword)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception("Something went wrong: Could not hash password");
+            }
+        }
+
+    }
+
     public class UserRegister
     {
         
@@ -55,6 +111,7 @@ namespace gym_management_system.Models
         private string _hashedPassword;
         private string _email;
         private string _fullName;
+        private MyAuthMethods _authMethods;
 
 
         // public getter and setter methods ------------------------------
@@ -110,117 +167,8 @@ namespace gym_management_system.Models
             }
         }
 
-        public UserRegister loginUser(UserRegister user)
-        {
-            UserRegister userResult = new UserRegister();
-            try
-            {
-                
-                // initialize the mongo client and get the database and collection
-                var client = new MongoClient(_connection.MONGO_CONN_STRING);
-                var db = client.GetDatabase("gym_management_system");
-                var collection = db.GetCollection<UserRegister>("users");
-
-
-                // add filters fpr searching the user
-                var filter = Builders<UserRegister>.Filter.Eq("Email", user.Email);
-                userResult = collection.Find(filter).FirstOrDefault();
-
-
-                if (userResult.Id == null)
-                {
-                    throw new Exception("Incorrect user credentials");
-                }
-
-                
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception("Something went wrong: Could not log in user");
-            }
-
-            try
-            {
-                
-                // now compare the passwords using the method compare passwords
-                bool passwordsMatch = ComparePasswords(user.UserPassword, userResult.HashedPassword);
-                
-
-                if (passwordsMatch == false)
-                {
-                    Console.WriteLine("Passwords do not match");
-                    throw new Exception("Incorrect user credentials");
-                }
-
-                // delete the password confirm field from the user object
-                userResult.UserPasswordConfirm = null;
-                userResult.UserPassword = null;
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(e.Message);
-
-            }
-
-            return userResult;
-
-        }
-
-
-        public string hashPassword(string password)
-        {
-            try
-            {
-
-                // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
-                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                    password: password!,
-                    salt: encryption_salt,
-                    prf: KeyDerivationPrf.HMACSHA256,
-                    iterationCount: 100000,
-                    numBytesRequested: 256 / 8));
-
-                Console.WriteLine("Hashed password: " + hashed);
-
-                return hashed;
-
-            } catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception("Something went wrong: Could not hash password");
-            }
-        }
-
-        public bool ComparePasswords(string inPassword, string hashedDBPassword)
-        {
-            // this method compares the password entered by the user (inPassword) with the hashed password in the database hashedDBPassword
-            try
-            {
-
-                string hashedInPassword = hashPassword(inPassword);
-
-                // compare the two hashed passwords, return true if they are the same, false if not
-                if (hashedInPassword == hashedDBPassword)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception("Something went wrong: Could not hash password");
-            }
-        }
-
-
+        
+        
     }
 
     public class UserLogin
@@ -248,16 +196,18 @@ namespace gym_management_system.Models
 
             encryption_salt = Encoding.ASCII.GetBytes(env_salt);
 
+            _myAuthMethods = new MyAuthMethods();
+
         }
 
-        // private fields ---------------------------------------------
+        // private fields and objects ------------------------------------
         private ObjectId _id;
         private string _userName;
         private string _userPassword;
-        private string _userPasswordConfirm;
         private string _hashedPassword;
         private string _email;
         private string _fullName;
+        private MyAuthMethods _myAuthMethods;
 
 
         // public getter and setter methods ------------------------------
@@ -272,39 +222,20 @@ namespace gym_management_system.Models
         [Required, MaxLength(32), DisplayName("Password"), BsonElement("UserPassword")]
         [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,32}$", ErrorMessage = "Password must be between 8 and 32 characters, and contain at least one uppercase, one lowercase, one number, and one special character")]
         public string UserPassword { get { return _userPassword; } set { _userPassword = value; } }
+        
+        public string ?UserName { get { return _userName; } set { _userName = value; } }
 
-        public string ?UserPasswordConfirm { get { return _userPasswordConfirm; } set { _userPasswordConfirm = value; } }
-
-
-        public string? UserName { get { return _userName; } set { _userName = value; } }
-
-        public string HashedPassword { get { return _hashedPassword; } set { _hashedPassword = value; } }
+        [BsonElement("HashedPassword")]
+        public string ?HashedPassword { get { return _hashedPassword; } set { _hashedPassword = value; } }
 
         public string? FullName { get { return _fullName; } set { _fullName = value; } }
 
 
 
         // public methods -----------------------------------------------
-        public void createUser(UserLogin user)
-        {
-            try
-            {
-
-                var client = new MongoClient(_connection.MONGO_CONN_STRING);
-                var db = client.GetDatabase("gym_management_system");
-                var collection = db.GetCollection<UserLogin>("users");
-                // collection.InsertOne(user);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception("Something went wrong: Could not create user");
-            }
-        }
-
         public UserLogin loginUser(UserLogin user)
         {
-            UserLogin userResult = new UserLogin();
+            UserLogin userResult;
             try
             {
 
@@ -316,27 +247,17 @@ namespace gym_management_system.Models
 
                 // add filters fpr searching the user
                 var filter = Builders<UserLogin>.Filter.Eq("Email", user.Email);
-                userResult = collection.Find(filter).FirstOrDefault();
+                userResult = collection.Find(filter).First();
 
+                
 
                 if (userResult.Id == null)
                 {
                     throw new Exception("Incorrect user credentials");
                 }
 
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception("Something went wrong: Could not log in user");
-            }
-
-            try
-            {
-
                 // now compare the passwords using the method compare passwords
-                bool passwordsMatch = ComparePasswords(user.UserPassword, userResult.HashedPassword);
+                bool passwordsMatch = _myAuthMethods.ComparePasswords(user.UserPassword, userResult.HashedPassword, encryption_salt);
 
 
                 if (passwordsMatch == false)
@@ -346,70 +267,19 @@ namespace gym_management_system.Models
                 }
 
 
+
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                throw new Exception(e.Message);
-
+                throw new Exception("Something went wrong: Could not log in user");
+                
             }
+
 
             return userResult;
 
         }
-
-
-        public string hashPassword(string password)
-        {
-            try
-            {
-
-                // derive a 256-bit subkey (use HMACSHA256 with 100,000 iterations)
-                string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
-                    password: password!,
-                    salt: encryption_salt,
-                    prf: KeyDerivationPrf.HMACSHA256,
-                    iterationCount: 100000,
-                    numBytesRequested: 256 / 8));
-
-                Console.WriteLine("Hashed password: " + hashed);
-
-                return hashed;
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception("Something went wrong: Could not hash password");
-            }
-        }
-
-        public bool ComparePasswords(string inPassword, string hashedDBPassword)
-        {
-            // this method compares the password entered by the user (inPassword) with the hashed password in the database hashedDBPassword
-            try
-            {
-
-                string hashedInPassword = hashPassword(inPassword);
-
-                // compare the two hashed passwords, return true if they are the same, false if not
-                if (hashedInPassword == hashedDBPassword)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception("Something went wrong: Could not hash password");
-            }
-        }
-
 
     }
 }

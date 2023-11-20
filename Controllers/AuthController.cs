@@ -80,7 +80,7 @@ namespace gym_management_system.Controllers
             }
 
             // if login is successful, redirect to the dashboard
-            TempData["feedback"] = "Login successful";
+            // TempData["feedback"] = "Login successful";
             return RedirectToAction("Index", "Home");
             // return RedirectToAction("Index", "Home");
         }
