@@ -70,7 +70,7 @@ namespace gym_management_system.Controllers
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), authProperties);
 
                 // add log to the console
-                Console.WriteLine("User logged in: " + user.Email + "in at " + DateTime.Now);
+                Console.WriteLine("User logged in: " + user.Email + " in at " + DateTime.Now);
 
 
             } catch (Exception e)
@@ -109,9 +109,15 @@ namespace gym_management_system.Controllers
 
         [HttpGet]
         [Route("logout")]
-        public IActionResult Logout()
+        public IActionResult Logout( )
         {
+            // sign out the user from the cookie authentication scheme
+            // using session authentication
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
             return RedirectToAction("Index", "Home");
         }
+
+        
     }
 }
