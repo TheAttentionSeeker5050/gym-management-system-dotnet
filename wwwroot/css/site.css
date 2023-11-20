@@ -70,6 +70,23 @@ html {
     border: 1px solid var(--primary-light);
 }
 
+#home-search-bar button {
+    background-color: var(--primary);
+    color: white;
+    border: 1px solid var(--primary);
+}
+
+#home-search-bar button:hover {
+    background-color: var(--primary-light);
+    color: white;
+    border: 1px solid var(--primary-light);
+
+}
+
+#home-search-bar {
+    max-width: 500px;
+    
+}
 /* media query for below lg breakpoint */
 @media (max-width: 991.98px) {
     .navbar-custom .nav-link {

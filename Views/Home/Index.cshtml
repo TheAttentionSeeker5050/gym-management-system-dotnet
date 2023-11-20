@@ -1,4 +1,5 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Home Page";
 
 }
@@ -12,17 +13,29 @@
     <h2>
         Empowering Our Team to Enhance Member Experiences
     </h2>
+    @* conditionally render  with viewbag IsAuthenticated Var*@
+    @if (ViewBag.IsAuthenticated == true)
+    {
+        @* add a search box form *@
+        <form method="POST" class="my-5 mx-auto" id="home-search-bar">
+            <div class="input-group my-5">
+                <input type="text" class="form-control" placeholder="Search for a member" aria-label="Search for a member" aria-describedby="basic-addon2" name="searchTerm">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Search</button>
+            </div>
+        </form>
+    } else {
+        <p>
+            Welcome to Zeus Gym's dedicated portal for our esteemed employees! This platform is specially designed to streamline gym membership management and enhance our service efficiency. As a key member of our team, this portal will be your central hub for managing member accounts and ensuring the best possible experience for our gym members.
+        </p>
 
-    <p>
-        Welcome to Zeus Gym's dedicated portal for our esteemed employees! This platform is specially designed to streamline gym membership management and enhance our service efficiency. As a key member of our team, this portal will be your central hub for managing member accounts and ensuring the best possible experience for our gym members.
-    </p>
-
-    @* add navigation buttons to register, login pages *@
-    <div class="d-flex gap-3 justify-content-center flex-column flex-sm-row">
-        <a asp-controller="Auth" asp-action="Register" class="btn custom-btn-1">Register</a>
-        <a asp-controller="Auth" asp-action="Login" class="btn custom-btn-1">Login</a>
-        @* and the option to sign as anon *@
-        <a asp-controller="Auth" asp-action="GuestLogin" asp-route-returnUrl="@Url.Action("Index", "Home")" class="btn custom-btn-1">Continue as Guest</a>
-    </div>
+        @* add navigation buttons to register, login pages *@
+        <div class="d-flex gap-3 justify-content-center flex-column flex-sm-row">
+            <a asp-controller="Auth" asp-action="Register" class="btn custom-btn-1">Register</a>
+            <a asp-controller="Auth" asp-action="Login" class="btn custom-btn-1">Login</a>
+            @* and the option to sign as anon *@
+            <a asp-controller="Auth" asp-action="GuestLogin" asp-route-returnUrl="@Url.Action("Index", "Home")" class="btn custom-btn-1">Continue as Guest</a>
+        </div>
+    }
+    
 
 </div>
