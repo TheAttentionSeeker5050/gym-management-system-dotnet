@@ -195,3 +195,11 @@ The **`User`** document represents an employee user in the system, such as a gym
 - Authenticated users are directed to the admin dashboard.
 - The admin dashboard serves as the central hub for all member and account management activities.
 - Clear navigation through headers, aside sections, and structured routes ensures a user-friendly experience.
+
+
+## Change Log
+### November 1, 2021 - Auth system sprint
+- added a session authentication system for users to login and register
+- added a welcome screen 
+- added a demo account login feature for users to test the application
+- dashboard is now protected and only accessible to authenticated users
