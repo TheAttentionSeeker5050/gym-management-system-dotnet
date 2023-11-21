@@ -29,10 +29,10 @@ db.users.insertMany([
         "FullName": "Mr. Employee 1"
     },
     {
-        "UserName": "employee1",
+        "UserName": "employee2",
         // password is Admin123**
         "HashedPassword": "p/nF8oGYqdO0q3tfDNwyUOopYuHXTdsqFO+Wc78LtC4=",
         "Email": "employee1@email.com",
-        "FullName": "Mr. Employee 1"
+        "FullName": "Mr. Employee 2"
     }
 ]);

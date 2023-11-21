@@ -101,6 +101,8 @@ namespace gym_management_system.Models
 
             encryption_salt = Encoding.ASCII.GetBytes(env_salt);
 
+            _myAuthMethods = new MyAuthMethods();
+
         }
 
         // private fields ---------------------------------------------
@@ -111,7 +113,7 @@ namespace gym_management_system.Models
         private string _hashedPassword;
         private string _email;
         private string _fullName;
-        private MyAuthMethods _authMethods;
+        private MyAuthMethods _myAuthMethods;
 
 
         // public getter and setter methods ------------------------------
@@ -158,7 +160,30 @@ namespace gym_management_system.Models
                 var client = new MongoClient(_connection.MONGO_CONN_STRING);
                 var db = client.GetDatabase("gym_management_system");
                 var collection = db.GetCollection<UserRegister>("users");
-                // collection.InsertOne(user);
+                
+
+                // check if the user already exists
+                var filter = Builders<UserRegister>.Filter.Eq("Email", user.Email);
+                var userResult = collection.Find(filter).ToList();
+
+                // if the user already exists, throw an exception
+                if (userResult.Count > 0)
+                {
+                    Console.WriteLine("User already exists");
+                    throw new Exception("User already exists");
+                }
+
+                // hash the password
+                user.HashedPassword = _myAuthMethods.hashPassword(user.UserPassword, encryption_salt);
+
+                // delete the password and password confirm fields
+                user.UserPassword = "";
+                user.UserPasswordConfirm = "";
+
+                // insert the user into the database and store the result 
+                collection.InsertOne(user);
+
+
             }
             catch (Exception e)
             {
@@ -230,6 +255,8 @@ namespace gym_management_system.Models
 
         public string? FullName { get { return _fullName; } set { _fullName = value; } }
 
+        public String ? UserPasswordConfirm { get; set; }
+
 
 
         // public methods -----------------------------------------------
@@ -244,11 +271,10 @@ namespace gym_management_system.Models
                 var db = client.GetDatabase("gym_management_system");
                 var collection = db.GetCollection<UserLogin>("users");
 
-
+                
                 // add filters fpr searching the user
                 var filter = Builders<UserLogin>.Filter.Eq("Email", user.Email);
                 userResult = collection.Find(filter).First();
-
                 
 
                 if (userResult.Id == null)
@@ -281,5 +307,75 @@ namespace gym_management_system.Models
 
         }
 
+        public UserLogin findUserByEmail(string email)
+        {
+            UserLogin userResult;
+            try
+            {
+
+                // initialize the mongo client and get the database and collection
+                var client = new MongoClient(_connection.MONGO_CONN_STRING);
+                var db = client.GetDatabase("gym_management_system");
+                var collection = db.GetCollection<UserLogin>("users");
+
+                // filter for searching the user
+                var filter = Builders<UserLogin>.Filter.Eq("Email", email);
+                userResult = collection.Find(filter).First();
+
+                if (userResult.Id == null)
+                {
+                    return null;
+                } 
+
+                return userResult;
+
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception("Something went wrong: Could not find user");
+            }
+        }
+
+        public UserLogin guestLogin()
+        {
+            // the dummy credentials
+
+            UserLogin dummyCredentials = new UserLogin();
+            dummyCredentials.UserPassword = "Admin123**";
+            dummyCredentials.Email = "employee1@email.com";
+
+            try
+            {
+                // use findUserByEmail method to check if the user exists
+                UserLogin userFind = this.findUserByEmail(dummyCredentials.Email.ToString());
+
+                // if user returns null, create it
+                if (userFind == null)
+                {
+                    UserRegister newDummyUser = new UserRegister();
+
+                    // add the dummy data for the user
+                    newDummyUser.UserName = "employee1";
+                    newDummyUser.UserPassword = "Admin123**";
+                    newDummyUser.UserPasswordConfirm = "Admin123**";
+                    newDummyUser.Email = dummyCredentials.Email;
+                    newDummyUser.FullName = "Mr. Employee";
+
+                    // use the createUser method to create the user
+                    newDummyUser.createUser(newDummyUser);
+                }
+
+                // now login the user with the loginUser method
+                UserLogin authUser = this.loginUser(dummyCredentials);
+
+                return authUser;
+
+
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception("Something went wrong: Could not log in dummy user");
+            }
+    }
     }
 }

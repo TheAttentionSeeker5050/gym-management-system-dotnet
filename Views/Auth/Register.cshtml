@@ -1,4 +1,5 @@
-﻿@{
+﻿@model gym_management_system.Models.UserRegister
+@{
     ViewData["Title"] = "Register";
     ViewData["CustomCss"] = "~/css/authViews.css";
 }
@@ -7,35 +8,58 @@
     <h1>Zeus Gym - Register</h1>
     <h2>Employee Portal</h2>
 
+    <div class="alert-container">
+        @* if there is an error, show it *@
+        @if (ViewData["error"] != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @ViewData["error"]
+            </div>
+        }
+
+        @* if feedback viewdata, show it as alert success *@
+        @if (ViewData["feedback"] != null)
+        {
+            <div class="alert alert-success" role="alert">
+                @ViewData["feedback"]
+            </div>
+        }
+    </div>
+
     @* make a register form using bootstrap styles *@
     <form method="POST" class="d-flex flex-column gap-2 custom-auth-form">
         @* if on mobile, full width, if on medium screen device, 75% and desktop 50% *@
         <div class="form-group text-start">
             <label for="registerEmail" class="">Email address</label>
-            <input type="email" class="form-control" id="registerEmail" aria-describedby="emailHelp" placeholder="Enter email">
+            <input type="text" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Enter email" asp-for="Email">
+            <span class="text-danger field-validation-valid" asp-validation-for="Email"></span>
         </div>
 
         <div class="form-group text-start">
             <label for="registerUsername" class="">Username</label>
-            <input type="text" class="form-control" id="registerUsername" aria-describedby="usernameHelp" placeholder="Enter username">
+            <input type="text" class="form-control" id="registerUsername" aria-describedby="usernameHelp" placeholder="Enter username" asp-for="UserName" />
+            <span class="text-danger field-validation-valid" asp-validation-for="UserName"></span>
         </div>
 
         <div class="form-group text-start">
             <label for="registerFullName" class="">Full Name</label>
-            <input type="text" class="form-control" id="registerFullName" aria-describedby="fullNameHelp" placeholder="Enter full name">
+            <input type="text" class="form-control" id="registerFullName" aria-describedby="fullNameHelp" placeholder="Enter full name" asp-for="FullName" />
+            <span class="text-danger field-validation-valid" asp-validation-for="FullName"></span>
         </div>
 
         <div class="form-group text-start">
             <label for="registerPassword">Password</label>
-            <input type="password" class="form-control" id="registerPassword" placeholder="Password">
+            <input type="password" class="form-control" id="registerPassword" placeholder="Password" asp-for="UserPassword" />
+            <span class="text-danger field-validation-valid" asp-validation-for="UserPassword"></span>
         </div>
 
         <div class="form-group text-start">
             <label for="registerConfirmPassword">Confirm Password</label>
-            <input type="password" class="form-control" id="registerConfirmPassword" placeholder="Confirm Password">
+            <input type="password" class="form-control" id="registerConfirmPassword" placeholder="Confirm Password" asp-for="UserPasswordConfirm"/>
+            <span class="text-danger field-validation-valid" asp-validation-for="UserPasswordConfirm"></span>
         </div>
 
-        <button type="submit" class="btn btn-primary my-3 custom-btn-primary mx-auto px-4" asp-controller="Auth" asp-action="Register">Submit</button>
+        <button type="submit" class="btn btn-primary my-3 custom-btn-primary mx-auto px-4" asp-controller="Auth" asp-action="RegisterSubmit">Submit</button>
     </form>
 
 </div>
