@@ -14,7 +14,6 @@ namespace gym_management_system.Controllers
             _logger = logger;
         }
 
-        // GET: DashboardController
         [HttpGet]
         [Route("dashboard")]
         public ActionResult Index()
