@@ -50,9 +50,6 @@ namespace gym_management_system.Controllers
                 // use the map method to map user claims
                 MapUserClaims(user);
 
-                // add log to the console
-                Console.WriteLine("User logged in: " + user.Email + " in at " + DateTime.Now);
-
 
             } catch (Exception e)
             {
@@ -98,13 +95,11 @@ namespace gym_management_system.Controllers
             // create a new user object
             try
             {
-                Console.WriteLine("Before user create function");
+
                 // attempt to register the user with the register model method
                 user.createUser(user);
 
-                // add log to the console
-                Console.WriteLine("User registered: " + user.Email + " in at " + DateTime.Now);
-
+                
             } catch (Exception e)
             {
                 TempData["error"] = e.Message;
@@ -144,10 +139,7 @@ namespace gym_management_system.Controllers
             // unmap user claims using the unmap method
             UnmapUserClaims();
 
-            /*// sign out the user from the cookie authentication scheme
-            // using session authentication
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);*/
-
+            // redirect to the home index page
             return RedirectToAction("Index", "Home");
         }
 
