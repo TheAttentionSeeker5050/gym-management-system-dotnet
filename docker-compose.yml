@@ -1,26 +1,6 @@
 version: '3.8'
 
 services:
-  # # Adminer for database management
-  # adminer:
-  #   image: adminer
-  #   restart: always
-  #   ports:
-  #     - "8080:8080"
-    
-    
-  # # MySQL Service
-  # mysql:
-  #   image: mysql:latest
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: rootpassword
-  #     MYSQL_DATABASE: gym_management
-  #     MYSQL_USER: user
-  #     MYSQL_PASSWORD: userpassword
-  #   ports:
-  #     - "3306:3306"
-  #   volumes:
-  #     - mysql_data:/var/lib/mysql
 
   # MongoDB Service
   mongodb:
