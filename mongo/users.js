@@ -36,3 +36,95 @@ db.users.insertMany([
         "FullName": "Mr. Employee 2"
     }
 ]);
+
+// add the gym members from the following data model:
+// 
+//         public string UserName { get; set; }
+//         public string Email { get; set; }
+//         public string FullName { get; set; }
+//         public string PhoneNumber { get; set; }
+//         public string Address { get; set; }
+//         public DateTime DateOfBirth { get; set; } = new DateTime(2000, 1, 1);
+//         public DateTime DateJoined { get; set;} = DateTime.Now;
+
+//         // an object array called membership and biometrics, default as empty array
+//         public Membership[] Memberships { get; set; }
+
+//         public BioMetric[] BioMetrics { get; set; }
+
+//         public Bill[] Bills { get; set; } = new Bill[0];
+
+db.gymMembers.insertMany([
+    {
+        "UserName": "member1",
+        "Email": "member1@email.com",
+        "FullName": "Mr. Member 1",
+        "PhoneNumber": "123456789",
+        "Address": "123 Street",
+        "DateOfBirth": new Date("2000-01-01"),
+        "DateJoined": new Date("2020-01-01"),
+        "Memberships": [],
+        "BioMetrics": [],
+        "Bills": []
+    },
+    {
+        "UserName": "member2",
+        "Email": "member2@email.com",
+        "FullName": "Mr. Member 2",
+        "PhoneNumber": "123456789",
+        "Address": "123 Street",
+        "DateOfBirth": new Date("2000-01-01"),
+        "DateJoined": new Date("2020-01-01"),
+        "Memberships": [],
+        "BioMetrics": [],
+        "Bills": []
+    },
+    {
+        "UserName": "member3",
+        "Email": "member3@email.com",
+        "FullName": "Mr. Member 3",
+        "PhoneNumber": "123456789",
+        "Address": "123 Street",
+        "DateOfBirth": new Date("2000-01-01"),
+        "DateJoined": new Date("2020-01-01"),
+        "Memberships": [],
+        "BioMetrics": [],
+        "Bills": []
+    },
+    {
+        "UserName": "member4",
+        "Email": "member4@email.com",
+        "FullName": "Mr. Member 4",
+        "PhoneNumber": "123456789",
+        "Address": "123 Street",
+        "DateOfBirth": new Date("2000-01-01"),
+        "DateJoined": new Date("2020-01-01"),
+        "Memberships": [],
+        "BioMetrics": [],
+        "Bills": []
+    },
+    {
+        "UserName": "member5",
+        "Email": "member5@email.com",
+        "FullName": "Mr. Member 5",
+        "PhoneNumber": "123456789",
+        "Address": "123 Street",
+        "DateOfBirth": new Date("2000-01-01"),
+        "DateJoined": new Date("2020-01-01"),
+        "Memberships": [],
+        "BioMetrics": [],
+        "Bills": []
+    },
+    {
+        "UserName": "member6",
+        "Email": "member6@email.com",
+        "FullName": "Mr. Member 6",
+        "PhoneNumber": "123456789",
+        "Address": "123 Street",
+        "DateOfBirth": new Date("2000-01-01"),
+        "DateJoined": new Date("2020-01-01"),
+        "Memberships": [],
+        "BioMetrics": [],
+        "Bills": []
+    }
+]);
