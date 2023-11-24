@@ -15,7 +15,7 @@ namespace gym_management_system.Controllers
         }
 
         [HttpGet]
-        [Route("dashboard")]
+        [Route("admin")]
         public ActionResult Index()
         {
             // if user is not logged in, redirect to login page
