@@ -13,6 +13,15 @@
     <h2>
         Empowering Our Team to Enhance Member Experiences
     </h2>
+
+    @* if error, show alert *@
+    @if (ViewData["error"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewData["error"]
+        </div>
+    }
+
     @* conditionally render  with viewbag IsAuthenticated Var*@
     @if (ViewBag.IsAuthenticated == true)
     {

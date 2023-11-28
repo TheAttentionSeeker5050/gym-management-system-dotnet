@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using gym_management_system.Models;
+using MongoDB.Bson;
 
 namespace gym_management_system.Controllers
 {
@@ -30,12 +31,13 @@ namespace gym_management_system.Controllers
 
             // the members array
             List<GymMember> members = new List<GymMember>();
+            MemberManager memberManager = new MemberManager();
 
             try {
                 // use member manager to get all members
-                MemberManager memberManager = new MemberManager();
                 memberManager.GetAllMembers();
-                members = memberManager.Members;
+                // assign the members array
+                // members = memberManager.Members;
 
             } catch (Exception e)
             {
@@ -44,7 +46,7 @@ namespace gym_management_system.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            return View(members);
+            return View(memberManager.Members);
 
         }
 
@@ -62,6 +64,95 @@ namespace gym_management_system.Controllers
             ViewBag.IsAuthenticated = true;
 
             return View();
+        }
+
+        // submit member object
+        [HttpPost]
+        [Route("admin/members/create")]
+        public ActionResult CreateSubmit(GymMember gymMember)
+        {
+            // if user is not logged in, redirect to login page
+            if (User.Identity.IsAuthenticated == false)
+            {
+                ViewBag.IsAuthenticated = false;
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.IsAuthenticated = true;
+
+            try
+            {
+                // create a new member manager
+                MemberManager memberManager = new MemberManager();
+
+                // add the member to the database
+                memberManager.CreateMember(gymMember);
+
+                // redirect to the members page
+                return RedirectToAction("Index", "Member");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                TempData["error"] = e.Message;
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+        // edit member object
+        [HttpGet]
+        [Route("admin/members/edit/{id}")]
+        public ActionResult Edit(string id)
+        {
+            // if user is not logged in, redirect to login page
+            if (User.Identity.IsAuthenticated == false)
+            {
+                ViewBag.IsAuthenticated = false;
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.IsAuthenticated = true;
+
+            // create a new member manager
+            MemberManager memberManager = new MemberManager();
+
+            // create object id from the id string
+            ObjectId objectId = new ObjectId(id);
+
+            // get the member from the database
+            memberManager.GetMemberById(objectId);
+
+            // assign the member to the viewbag
+            ViewBag.Member = memberManager.Member;
+
+            return View();
+        }
+
+        // delete member object
+        [HttpGet]
+        [Route("admin/members/delete/{id}")]
+        public ActionResult Delete(string id)
+        {
+            // if user is not logged in, redirect to login page
+            if (User.Identity.IsAuthenticated == false)
+            {
+                ViewBag.IsAuthenticated = false;
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.IsAuthenticated = true;
+
+            // create a new member manager
+            MemberManager memberManager = new MemberManager();
+
+            // create object id from the id string
+            ObjectId objectId = new ObjectId(id);
+
+            // get the member from the database
+            memberManager.GetMemberById(objectId);
+
+            // assign the member to the viewbag
+            ViewBag.Member = memberManager.Member;
+
+            return View();
+
         }
 
     }

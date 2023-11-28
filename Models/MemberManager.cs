@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using static MongoDB.Bson.Serialization.Serializers.SerializerHelper;
 
 
 namespace gym_management_system.Models {
@@ -69,15 +70,15 @@ namespace gym_management_system.Models {
             // create a new membership
             try {
                 // get the member using method, it will throw an exception if not found
-                var member = GetMemberById(memberId);
+                GetMemberById(memberId);
 
                 // add the membership to the member, membership is an array inside the member document
                 // use our member object to update the member, and push the membership object to the array
-                member.Memberships.Append(membership);
+                _member.Memberships.Append(membership);
 
                 // create filters and update builders
                 var filter = Builders<GymMember>.Filter.Eq("_id", memberId);
-                var update = Builders<GymMember>.Update.Set("Memberships", member.Memberships);
+                var update = Builders<GymMember>.Update.Set("Memberships", _member.Memberships);
                 
                 // use the generic method to update the member
                 UpdateMembershipGeneric(filter, update);
@@ -93,15 +94,15 @@ namespace gym_management_system.Models {
             // create a new biometric
             try {
                 // get the member using method, it will throw an exception if not found
-                var member = GetMemberById(memberId);
+                GetMemberById(memberId);
 
                 // add the biometric to the member, biometric is an array inside the member document
                 // use our member object to update the member, and push the biometric object to the array
-                member.BioMetrics.Append(biometric);
+                _member.BioMetrics.Append(biometric);
 
                 // create filters and update builders
                 var filter = Builders<GymMember>.Filter.Eq("_id", memberId);
-                var update = Builders<GymMember>.Update.Set("BioMetrics", member.BioMetrics);
+                var update = Builders<GymMember>.Update.Set("BioMetrics", _member.BioMetrics);
                 
                 // use the generic method to update the member
                 UpdateMembershipGeneric(filter, update);
@@ -117,15 +118,15 @@ namespace gym_management_system.Models {
             // create a new bill
             try {
                 // get the member using method, it will throw an exception if not found
-                var member = GetMemberById(memberId);
+                GetMemberById(memberId);
 
                 // add the bill to the member, bill is an array inside the member document
                 // use our member object to update the member, and push the bill object to the array
-                member.Bills.Append(bill);
+                _member.Bills.Append(bill);
 
                 // create filters and update builders
                 var filter = Builders<GymMember>.Filter.Eq("_id", memberId);
-                var update = Builders<GymMember>.Update.Set("Bills", member.Bills);
+                var update = Builders<GymMember>.Update.Set("Bills", _member.Bills);
                 
                 // use the generic method to update the member
                 UpdateMembershipGeneric(filter, update);
@@ -140,7 +141,8 @@ namespace gym_management_system.Models {
         public void UpdateMemberInfo(GymMember member) {
             // update a member
             try {
-                var dbMember = GetMemberById(member._id);
+                GetMemberById(member._id);
+                var dbMember = _member;
                 if (dbMember == null) {
                     throw new Exception("Member not found");
                 }
@@ -170,18 +172,18 @@ namespace gym_management_system.Models {
             // delete a membership
             try {
                 // get the member using method, it will throw an exception if not found
-                var member = GetMemberById(memberId);
+                GetMemberById(memberId);
 
                 // remove the membership from the member, membership is an array inside the member document
                 // use our member object to update the member, and push the membership object to the array
-                member.Memberships.All(m => m._id != membershipId);
+                _member.Memberships.All(m => m._id != membershipId);
                 
                 // console log
-                Console.WriteLine(member.Memberships);
+                Console.WriteLine(_member.Memberships);
 
                 // create filters and update builders
                 var filter = Builders<GymMember>.Filter.Eq("_id", memberId);
-                var update = Builders<GymMember>.Update.Set("Memberships", member.Memberships);
+                var update = Builders<GymMember>.Update.Set("Memberships", _member.Memberships);
                 
                 // use the generic method to update the member
                 UpdateMembershipGeneric(filter, update);
@@ -197,18 +199,19 @@ namespace gym_management_system.Models {
             // delete a biometric
             try {
                 // get the member using method, it will throw an exception if not found
-                var member = GetMemberById(memberId);
+                
+                GetMemberById(memberId);
 
                 // remove the biometric from the member, biometric is an array inside the member document
                 // use our member object to update the member, and push the biometric object to the array
-                member.BioMetrics.All(m => m._id != biometricId);
+                _member.BioMetrics.All(m => m._id != biometricId);
                 
                 // console log
-                Console.WriteLine(member.BioMetrics);
+                Console.WriteLine(_member.BioMetrics);
 
                 // create filters and update builders
                 var filter = Builders<GymMember>.Filter.Eq("_id", memberId);
-                var update = Builders<GymMember>.Update.Set("BioMetrics", member.BioMetrics);
+                var update = Builders<GymMember>.Update.Set("BioMetrics", _member.BioMetrics);
                 
                 // use the generic method to update the member
                 UpdateMembershipGeneric(filter, update);
@@ -265,33 +268,33 @@ namespace gym_management_system.Models {
         }
 
         // using the above method, we can get a member by id, email or username
-        public GymMember GetMemberById(ObjectId id) {
+        public void GetMemberById(ObjectId id) {
             // get member by id
             try {
                 var filter = Builders<GymMember>.Filter.Eq("_id", id);
-                return GetMember(filter);
+                _member = GetMember(filter);
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
                 throw new Exception(e.Message);
             }
         }
 
-        public GymMember GetMemberByEmail(string email) {
+        public void GetMemberByEmail(string email) {
             // get member by email
             try {
                 var filter = Builders<GymMember>.Filter.Eq("Email", email);
-                return GetMember(filter);
+                _member = GetMember(filter);
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
                 throw new Exception(e.Message);
             }
         }
 
-        public GymMember GetMemberByUsername(string username) {
+        public void GetMemberByUsername(string username) {
             // get member by username
             try {
                 var filter = Builders<GymMember>.Filter.Eq("UserName", username);
-                return GetMember(filter);
+                _member = GetMember(filter);
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
                 throw new Exception(e.Message);
@@ -299,7 +302,7 @@ namespace gym_management_system.Models {
         }
 
         // get all members
-        public List<GymMember> GetAllMembers() {
+        public void GetAllMembers() {
             // get all members
             try {
                 var client = new MongoClient(_connection.MONGO_CONN_STRING);
@@ -309,8 +312,7 @@ namespace gym_management_system.Models {
                 // get all the members, we will use an empty filter selector
                 var result = collection.Find(_ => true).ToList();
                 
-                Members = result;
-                return result;
+                _members = result;
 
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
@@ -319,7 +321,7 @@ namespace gym_management_system.Models {
         }
 
         // get members with paginations, using limit and offset
-        public List<GymMember> GetMembersWithPagination(int limit, int offset) {
+        public void GetMembersWithPagination(int limit, int offset) {
             // get all members
             try {
                 var client = new MongoClient(_connection.MONGO_CONN_STRING);
@@ -328,11 +330,9 @@ namespace gym_management_system.Models {
 
                 // get the member
                 var result = collection.Find(_ => true).Skip(offset).Limit(limit).ToList();
-                if (result.Count > 0) {
-                    return result;
-                } else {
-                    throw new Exception("No members found");
-                }
+
+                _members = result;
+
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
                 throw new Exception("Error getting members");
@@ -340,7 +340,7 @@ namespace gym_management_system.Models {
         }
 
         // get members with filter
-        public List<GymMember> GetMembersWithFilter(FilterDefinition<GymMember> filter) {
+        public void GetMembersWithFilter(FilterDefinition<GymMember> filter) {
             // get all members
             try {
                 var client = new MongoClient(_connection.MONGO_CONN_STRING);
@@ -349,11 +349,9 @@ namespace gym_management_system.Models {
 
                 // get the member
                 var result = collection.Find(filter).ToList();
-                if (result.Count > 0) {
-                    return result;
-                } else {
-                    throw new Exception("No members found");
-                }
+
+                _members = result;
+
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
                 throw new Exception("Error getting members");

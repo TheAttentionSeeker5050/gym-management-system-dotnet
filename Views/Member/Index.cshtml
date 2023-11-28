@@ -9,12 +9,72 @@
     <h1>Zeus Gym - Members List</h1>
     
     @* add a button section *@
-    <section class="">
+    <section class="my-5">
         @* add button *@
         <a asp-action="Create" asp-controller="Member" class="btn btn-primary custom-btn-primary">
             Add Member
         </a>
     </section>
+
+    @* create table for the Gym member objects *@
+    @* the values are: Email, FullName, PhoneNumber, Address, DateOfBirth *@
+    <table class="my-5 table">
+        <thead>
+            <tr>
+                <th scope="col">UserName</th>
+                <th scope="col">
+                    Email
+                </th>
+                <th scope="col">
+                    Full Name
+                </th>
+                <th scope="col">
+                    Phone Number
+                </th>
+                <th scope="col">
+                    Address
+                </th>
+                <th scope="col">
+                    DOB
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var member in Model)
+            {
+                <tr>
+                    <td>
+                        @member.UserName
+                    </td>
+                    <td>
+                        @member.Email
+                    </td>
+                    <td>
+                        @member.FullName
+                    </td>
+                    <td>
+                        @member.PhoneNumber
+                    </td>
+                    <td>
+                        @member.Address
+                    </td>
+                    <td>
+                        @member.DateOfBirth
+                    </td>
+                    <td>
+                        @* add edit and delete buttons *@
+                        <a asp-action="Edit" asp-route-id="@member._id" asp-controller="Member" class="btn btn-primary btn-secondary">
+                            Edit
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@member._id" asp-controller="Member" class="btn btn-danger custom-btn-danger">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
 
 
