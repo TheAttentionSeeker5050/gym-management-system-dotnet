@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gym_management_system.Controllers
@@ -13,8 +14,19 @@ namespace gym_management_system.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        [Route("account/settings")]
         public ActionResult Index()
         {
+
+            // if user is not logged in, redirect to login page
+            if (User.Identity.IsAuthenticated == false)
+            {
+                ViewBag.IsAuthenticated = false;
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.IsAuthenticated = true;
+
             return View();
         }
 

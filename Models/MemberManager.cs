@@ -306,13 +306,12 @@ namespace gym_management_system.Models {
                 var db = client.GetDatabase("gym_management_system");
                 var collection = db.GetCollection<GymMember>("gymMembers");
 
-                // get the member
+                // get all the members, we will use an empty filter selector
                 var result = collection.Find(_ => true).ToList();
-                if (result.Count > 0) {
-                    return result;
-                } else {
-                    throw new Exception("No members found");
-                }
+                
+                Members = result;
+                return result;
+
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
                 throw new Exception("Error getting members");
