@@ -21,20 +21,23 @@
     <table class="my-5 table">
         <thead>
             <tr>
-                <th scope="col">UserName</th>
+                @* only display the username if not mobile *@
+                <th scope="col" class="d-sm-table-cell d-none">
+                    UserName
+                </th>
                 <th scope="col">
                     Email
                 </th>
-                <th scope="col">
+                <th scope="col" class="d-sm-table-cell d-none">
                     Full Name
                 </th>
-                <th scope="col">
+                <th scope="col" class="d-sm-table-cell d-none">
                     Phone Number
                 </th>
-                <th scope="col">
+                <th scope="col" class="d-sm-table-cell d-none">
                     Address
                 </th>
-                <th scope="col">
+                <th scope="col" class="d-sm-table-cell d-none">
                     DOB
                 </th>
                 <th>Actions</th>
@@ -44,7 +47,7 @@
             @foreach (var member in Model)
             {
                 <tr>
-                    <td>
+                    <td class="d-sm-table-cell d-none">
                         <a asp-action="Details" asp-route-id="@member._id" asp-controller="Member">
                             @member.UserName
                         </a>
@@ -54,21 +57,21 @@
                             @member.Email
                         </a>
                     </td>
-                    <td>
+                    <td class="d-sm-table-cell d-none">
                         <a asp-action="Details" asp-route-id="@member._id" asp-controller="Member">
                             @member.FullName
                         </a>
                     </td>
-                    <td>
+                    <td class="d-sm-table-cell d-none">
                         @member.PhoneNumber
                     </td>
-                    <td>
+                    <td class="d-sm-table-cell d-none">
                         @member.Address
                     </td>
-                    <td>
+                    <td class="d-sm-table-cell d-none">
                         @member.DateOfBirth
                     </td>
-                    <td>
+                    <td class="d-flex flex-sm-row flex-column gap-2">
                         @* add edit and delete buttons *@
                         <a asp-action="Edit" asp-route-id="@member._id" asp-controller="Member" class="btn btn-primary btn-secondary">
                             Edit

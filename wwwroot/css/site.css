@@ -50,6 +50,11 @@ html {
     color: white;
 }
 
+.custom-border-primary {
+    border: solid 2px var(--primary);
+    border-radius: 15px;
+}
+
 #list-icon {
     font-size: 2.5rem;
 }
@@ -82,6 +87,8 @@ html {
     border: 1px solid var(--primary-light);
 
 }
+
+
 
 #home-search-bar {
     max-width: 500px;

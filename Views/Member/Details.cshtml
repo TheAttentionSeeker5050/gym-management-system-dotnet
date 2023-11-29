@@ -8,8 +8,16 @@
 <div class="text-center my-5 px-3 container">
     <h1>Zeus Gym - Member Details</h1>
 
-    <section class="my-5 ">
-        Some gym member details
+    <section class="my-4 px-4 py-3 text-start custom-border-primary">
+        <h2>Member Details</h2>
+        @* member user details will be displayed here *@
+        <p><strong>Member Email:</strong> @ViewBag.Member.Email</p>
+        <p><strong>Member UserName:</strong> @ViewBag.Member.UserName</p>
+        <p><strong>Member FullName:</strong> @ViewBag.Member.FullName</p>
+        <p><strong>Member PhoneNumber:</strong> @ViewBag.Member.PhoneNumber</p>
+        <p><strong>Member Address:</strong> @ViewBag.Member.Address</p>
+        <p><strong>Member DateOfBirth:</strong> @ViewBag.Member.DateOfBirth.ToString("yyyy-MM-dd")</p>
+
     </section>
             
 </div>
