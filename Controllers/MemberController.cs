@@ -4,6 +4,15 @@ using Microsoft.AspNetCore.Mvc;
 using gym_management_system.Models;
 using MongoDB.Bson;
 
+// import system and enumerables
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+
+
 namespace gym_management_system.Controllers
 {
     public class MemberController : Controller
@@ -264,6 +273,16 @@ namespace gym_management_system.Controllers
 
             // assign the member to the viewbag
             ViewBag.Member = memberManager.Member;
+
+            // add membership count to viewbag
+            ViewBag.MembershipCount = memberManager.Member.Memberships.Count;
+            
+            // if there are memberships, add the latest membership to the viewbag
+            if (memberManager.Member.Memberships.Count > 0)
+            {
+                ViewBag.LatestMembership = memberManager.Member.Memberships[memberManager.Member.Memberships.Count - 1];
+            }
+
 
             return View();
 

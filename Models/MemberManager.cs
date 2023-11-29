@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using static MongoDB.Bson.Serialization.Serializers.SerializerHelper;
+using MongoDB.Bson.Serialization.Attributes;
+using System.Linq;
 
 
 namespace gym_management_system.Models {
@@ -156,7 +158,10 @@ namespace gym_management_system.Models {
                     .Set("PhoneNumber", member.PhoneNumber)
                     .Set("Address", member.Address)
                     .Set("DateOfBirth", member.DateOfBirth)
-                    .Set("DateJoined", member.DateJoined);
+                    .Set("DateJoined", member.DateJoined)
+                    .Set("Memberships", new List<Membership>{})
+                    .Set("BioMetrics", new List<BioMetric> { })
+                    .Set("Bills", new List<Bill> { });
 
                 UpdateMembershipGeneric(filter, update);
 

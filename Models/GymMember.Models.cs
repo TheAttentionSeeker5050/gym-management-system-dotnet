@@ -22,11 +22,11 @@ namespace gym_management_system.Models
         public DateTime DateJoined { get; set;} = DateTime.Now;
 
         // an object array called membership and biometrics, default as empty array
-        public Membership[] Memberships { get; set; }
+        public List<Membership> Memberships { get; set; } = new List<Membership>();
 
-        public BioMetric[] BioMetrics { get; set; }
+        public List<BioMetric> BioMetrics { get; set; } = new List<BioMetric>();
 
-        public Bill[] Bills { get; set; } = new Bill[0];
+        public List<Bill> Bills { get; set; } = new List<Bill>();
 
     }
 

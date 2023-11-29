@@ -21,6 +21,28 @@
 
     <section class="my-4 px-4 py-3 text-start custom-border-primary">
         <h2>Member Subscription Details</h2>
+        
+        @* show current membership plan, being the latest date, if membership status MembershipStatusActive is active, otherwise show a state (inactive) next to the membership type MembershipType and the last date MembershipEndDate *@
+        @if (ViewBag.MembershipCount > 0)
+        {
+            <div>
+                <p><strong>Membership Type:</strong> @ViewBag.LatestMembership.MembershipType</p>
+                <p><strong>Membership Status:</strong> @ViewBag.LatestMembership.MembershipStatus</p>
+                <p><strong>Membership Start Date:</strong> @ViewBag.LatestMembership.MembershipStartDate.ToString("yyyy-MM-dd")</p>
+                <p><strong>Membership End Date:</strong> @ViewBag.LatestMembership.MembershipEndDate.ToString("yyyy-MM-dd")</p>
+            </div>
+        }
+        else
+        {
+            <div>
+                <h5>Last Membership</h5>
+                <p><strong>Membership Type:</strong> No Membership</p>
+                <p><strong>Membership Status:</strong> No Membership</p>
+                <p><strong>Membership Start Date:</strong> No Membership</p>
+                <p><strong>Membership End Date:</strong> No Membership</p>
+            </div>
+        }
+        
     </section>
 
     <section class="my-4 px-4 py-3 text-start custom-border-primary">
