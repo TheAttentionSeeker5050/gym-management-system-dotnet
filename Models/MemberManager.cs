@@ -138,17 +138,18 @@ namespace gym_management_system.Models {
         }
 
         // update member info
-        public void UpdateMemberInfo(GymMember member) {
+        public void UpdateMemberInfo(ObjectId objectId, GymMember member) {
             // update a member
             try {
-                GetMemberById(member._id);
+
                 var dbMember = _member;
                 if (dbMember == null) {
                     throw new Exception("Member not found");
                 }
+ 
 
                 // use the generic method to update the member
-                var filter = Builders<GymMember>.Filter.Eq("_id", member._id);
+                var filter = Builders<GymMember>.Filter.Eq("_id", objectId);
                 var update = Builders<GymMember>.Update.Set("UserName", member.UserName)
                     .Set("Email", member.Email)
                     .Set("FullName", member.FullName)
@@ -166,7 +167,33 @@ namespace gym_management_system.Models {
             }
         }
 
-        // delete using generic method
+        // delete using generic method -----------------------------
+        // delete member
+        public void DeleteMember(ObjectId memberId)
+        {
+            // delete a member
+            try
+            {
+                // get the member using method, it will throw an exception if not found
+                GetMemberById(memberId);
+
+                // create filters and update builders
+                var filter = Builders<GymMember>.Filter.Eq("_id", memberId);
+                
+                // use the mongodb driver to delete the member
+                var client = new MongoClient(_connection.MONGO_CONN_STRING);
+                var db = client.GetDatabase("gym_management_system");
+                var collection = db.GetCollection<GymMember>("gymMembers");
+
+                collection.DeleteOne(filter);
+
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                throw new Exception(e.Message);
+            }
+        }
+
         // delete membership
         public void DeleteMembership(ObjectId memberId, ObjectId membershipId) {
             // delete a membership

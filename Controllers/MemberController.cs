@@ -126,6 +126,48 @@ namespace gym_management_system.Controllers
             return View();
         }
 
+        // submit edit member object
+        [HttpPost]
+        [Route("admin/members/edit/{id}")]
+        public ActionResult EditSubmit(string id, GymMember gymMember)
+        {
+            // if user is not logged in, redirect to login page
+            if (User.Identity.IsAuthenticated == false)
+            {
+                ViewBag.IsAuthenticated = false;
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.IsAuthenticated = true;
+
+            try
+            {
+                // create a new member manager
+                MemberManager memberManager = new MemberManager();
+
+                // create object id from the id string
+                ObjectId objectId = new ObjectId(id);
+
+                // get the member from the database
+                memberManager.GetMemberById(objectId);
+
+                // assign the member to the viewbag
+                ViewBag.Member = memberManager.Member;
+
+                // update the member
+                memberManager.UpdateMemberInfo(objectId, gymMember);
+
+                // redirect to the members page
+                return RedirectToAction("Index", "Member");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                TempData["error"] = e.Message;
+                return RedirectToAction("Index", "Home");
+            }
+        }
+
+
         // delete member object
         [HttpGet]
         [Route("admin/members/delete/{id}")]
@@ -153,6 +195,49 @@ namespace gym_management_system.Controllers
 
             return View();
 
+        }
+
+
+        // submit delete member object
+        [HttpPost]
+        [Route("admin/members/delete/{id}")]
+        public ActionResult DeleteSubmit(string id)
+        {
+            // if user is not logged in, redirect to login page
+            if (User.Identity.IsAuthenticated == false)
+            {
+                ViewBag.IsAuthenticated = false;
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.IsAuthenticated = true;
+
+            try
+            {
+                // create a new member manager
+                MemberManager memberManager = new MemberManager();
+
+                // create object id from the id string
+                ObjectId objectId = new ObjectId(id);
+
+                // get the member from the database
+                memberManager.GetMemberById(objectId);
+
+                // assign the member to the viewbag
+                ViewBag.Member = memberManager.Member;
+
+                // delete the member
+                memberManager.DeleteMember(objectId);
+
+                // redirect to the members page
+                return RedirectToAction("Index", "Member");
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                TempData["error"] = e.Message;
+                return RedirectToAction("Index", "Home");
+            }
         }
 
     }
