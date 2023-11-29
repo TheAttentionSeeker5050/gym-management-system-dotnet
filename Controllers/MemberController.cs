@@ -240,5 +240,34 @@ namespace gym_management_system.Controllers
             }
         }
 
+        // view member object details
+        [HttpGet]
+        [Route("admin/members/details/{id}")]
+        public ActionResult Details(string id)
+        {
+            // if user is not logged in, redirect to login page
+            if (User.Identity.IsAuthenticated == false)
+            {
+                ViewBag.IsAuthenticated = false;
+                return RedirectToAction("Index", "Home");
+            }
+            ViewBag.IsAuthenticated = true;
+
+            // create a new member manager
+            MemberManager memberManager = new MemberManager();
+
+            // create object id from the id string
+            ObjectId objectId = new ObjectId(id);
+
+            // get the member from the database
+            memberManager.GetMemberById(objectId);
+
+            // assign the member to the viewbag
+            ViewBag.Member = memberManager.Member;
+
+            return View();
+
+        }
+
     }
 }

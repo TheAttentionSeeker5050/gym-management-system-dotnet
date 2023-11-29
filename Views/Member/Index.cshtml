@@ -45,13 +45,19 @@
             {
                 <tr>
                     <td>
-                        @member.UserName
+                        <a asp-action="Details" asp-route-id="@member._id" asp-controller="Member">
+                            @member.UserName
+                        </a>
                     </td>
                     <td>
-                        @member.Email
+                        <a asp-action="Details" asp-route-id="@member._id" asp-controller="Member">
+                            @member.Email
+                        </a>
                     </td>
                     <td>
-                        @member.FullName
+                        <a asp-action="Details" asp-route-id="@member._id" asp-controller="Member">
+                            @member.FullName
+                        </a>
                     </td>
                     <td>
                         @member.PhoneNumber
