@@ -8,6 +8,14 @@
 <div class="text-center my-5 px-3 container">
     <h1>Zeus Gym - Create Member</h1>
 
+    @* the error display component, it is conditional*@
+    @if (ViewBag.Error != "")
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Error
+        </div>
+    }
+
     <section class="my-5 ">
         <form class="d-flex flex-column gap-4" method="post" asp-action="CreateSubmit" asp-controller="Member" >
 
@@ -15,13 +23,13 @@
                 @* input for Email *@
                 <div class="form-group col text-start">
                     <label for="Email" class="mx-2">Email</label>
-                    <input type="text" class="form-control" id="Email" name="Email" placeholder="Enter Email">
+                    <input type="text" class="form-control" id="Email" name="Email" placeholder="Enter Email" required>
                 </div>
 
                 @* input for UserName *@
                 <div class="form-group col text-start">
                     <label for="UserName" class="mx-2">UserName</label>
-                    <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Enter UserName">
+                    <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Enter UserName" required>
                 </div>
 
                 
@@ -31,13 +39,13 @@
                 @* input for FullName *@
                 <div class="form-group col text-start">
                     <label for="FullName" class="mx-2">Full Name</label>
-                    <input type="text" class="form-control" id="FullName" name="FullName" placeholder="Enter Full Name">
+                    <input type="text" class="form-control" id="FullName" name="FullName" placeholder="Enter Full Name" required>
                 </div>
 
                 @* input for PhoneNumber *@
                 <div class="form-group col text-start">
                     <label for="PhoneNumber" class="mx-2">Phone Number</label>
-                    <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Enter Phone Number">
+                    <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Enter Phone Number" required>
                 </div>
                 
             </div>
@@ -45,13 +53,13 @@
                 @* input for Address *@
                 <div class="form-group col text-start">
                     <label for="Address" class="mx-2">Address</label>
-                    <input type="text" class="form-control" id="Address" name="Address" placeholder="Enter Address">
+                    <input type="text" class="form-control" id="Address" name="Address" placeholder="Enter Address" required>
                 </div>
 
                 @* input for DateOfBirth *@
                 <div class="form-group col text-start">
                     <label for="DateOfBirth" class="mx-2">Date Of Birth</label>
-                    <input type="text" class="form-control" id="DateOfBirth" name="DateOfBirth" placeholder="Enter Date Of Birth" asp-for="DateOfBirth">
+                    <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth" placeholder="Enter Date Of Birth" asp-for="DateOfBirth" required>
                 </div>
             </div>
             

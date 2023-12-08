@@ -70,6 +70,17 @@ namespace gym_management_system.Controllers
                 ViewBag.IsAuthenticated = false;
                 return RedirectToAction("Index", "Home");
             }
+            
+            // check if there is an error message in the tempdata
+            if (TempData["error"] != null)
+            {
+                ViewBag.Error = TempData["error"].ToString();
+            } else
+            {
+                ViewBag.Error = "";
+            }
+
+
             ViewBag.IsAuthenticated = true;
 
             return View();
@@ -101,9 +112,9 @@ namespace gym_management_system.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                // Console.WriteLine(e.Message);
                 TempData["error"] = e.Message;
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Create", "Member");
             }
         }
 

@@ -58,12 +58,20 @@ namespace gym_management_system.Models {
                     throw new Exception("Username already exists");
                 }
 
+                // check if email already exists
+                filter = Builders<GymMember>.Filter.Eq("Email", member.Email);
+                result = collection.Find(filter).ToList();
+                if (result.Count > 0)
+                {
+                    throw new Exception("Email already exists");
+                }
+
                 // insert the member
                 collection.InsertOne(member);
 
             } catch (Exception e) {
                 Console.WriteLine(e.Message);
-                throw new Exception("Error creating member");
+                throw new Exception(e.Message);
             }
         }
 
