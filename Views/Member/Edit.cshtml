@@ -11,20 +11,23 @@
     <section class="my-5 ">
         <form class="d-flex flex-column gap-4" method="post">
 
-            <input type="hidden" name="_id" value="@ViewBag.Member._id" />
+            <span asp-validation-for="_id"></span>
+            <input type="hidden" name="_id" value="@Model._id" />
 
             <div class="d-sm-flex flex-sm-row flex-column gap-4">
                 @* input for Email *@
                 <div class="form-group col text-start">
                     <label for="Email" class="mx-2">Email</label>
                     @* use viewbag to get the email *@
-                    <input type="text" class="form-control" id="Email" name="Email" placeholder="Enter Email" value="@ViewBag.Member.Email">
+                    <input type="text" class="form-control" id="Email" name="Email" placeholder="Enter Email" value="@Model.Email">
+                    <span class="text-danger field-validation-valid" asp-validation-for="Email"></span>
                 </div>
 
                 @* input for UserName *@
                 <div class="form-group col text-start">
                     <label for="UserName" class="mx-2">UserName</label>
-                    <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Enter UserName" value="@ViewBag.Member.UserName">
+                    <input type="text" class="form-control" id="UserName" name="UserName" placeholder="Enter UserName" value="@Model.UserName">
+                    <span class="text-danger field-validation-valid" asp-validation-for="UserName"></span>
                 </div>
 
 
@@ -34,13 +37,15 @@
                 @* input for FullName *@
                 <div class="form-group col text-start">
                     <label for="FullName" class="mx-2">Full Name</label>
-                    <input type="text" class="form-control" id="FullName" name="FullName" placeholder="Enter Full Name" value="@ViewBag.Member.FullName">
+                    <input type="text" class="form-control" id="FullName" name="FullName" placeholder="Enter Full Name" value="@Model.FullName">
+                    <span class="text-danger field-validation-valid" asp-validation-for="FullName"></span>
                 </div>
 
                 @* input for PhoneNumber *@
                 <div class="form-group col text-start">
                     <label for="PhoneNumber" class="mx-2">Phone Number</label>
-                    <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Enter Phone Number" value="@ViewBag.Member.PhoneNumber">
+                    <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Enter Phone Number" value="@Model.PhoneNumber">
+                    <span class="text-danger field-validation-valid" asp-validation-for="PhoneNumber"></span>
                 </div>
 
             </div>
@@ -48,13 +53,15 @@
                 @* input for Address *@
                 <div class="form-group col text-start">
                     <label for="Address" class="mx-2">Address</label>
-                    <input type="text" class="form-control" id="Address" name="Address" placeholder="Enter Address" value="@ViewBag.Member.Address">
+                    <input type="text" class="form-control" id="Address" name="Address" placeholder="Enter Address" value="@Model.Address">
+                    <span class="text-danger field-validation-valid" asp-validation-for="Address"></span>
                 </div>
 
                 @* input for DateOfBirth *@
                 <div class="form-group col text-start">
                     <label for="DateOfBirth" class="mx-2">Date Of Birth</label>
-                    <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth" placeholder="Enter Date Of Birth" asp-for="DateOfBirth" value="@ViewBag.Member.DateOfBirth.ToString("yyyy-MM-dd")"> @* we format date to yyyy-MM-dd using ToString() *@
+                    <input type="date" class="form-control" id="DateOfBirth" name="DateOfBirth" placeholder="Enter Date Of Birth" asp-for="DateOfBirth" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")"> @* we format date to yyyy-MM-dd using ToString() *@
+                    <span class="text-danger field-validation-valid" asp-validation-for="DateOfBirth"></span>
                     
                 </div>
             </div>
@@ -64,7 +71,7 @@
                 <button type="submit" class="btn btn-primary custom-btn-primary px-4">
                     Submit
                 </button>
-                <a asp-action="EditSubmit" asp-controller="Member" class="btn btn-primary btn-secondary ">
+                <a asp-action="Index" asp-controller="Member" class="btn btn-primary btn-secondary ">
                     Back to Members List
                 </a>
             </div>

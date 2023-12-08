@@ -43,8 +43,6 @@ namespace gym_management_system.Models {
             var db = client.GetDatabase("gym_management_system");
             var collection = db.GetCollection<GymMember>("gymMembers");
 
-                
-
             var errors = new Dictionary<string, string>();
 
             // find by username to assert uniqueness
@@ -82,8 +80,68 @@ namespace gym_management_system.Models {
             
         }
 
+        // update member info
+        public void UpdateMemberInfo(ObjectId objectId, GymMember member)
+        {
+            // update a member
+            var dbMember = _member;
+            if (dbMember == null)
+            {
+                throw new Exception("Member not found");
+            }
+
+            GetAllMembers();
+
+            // make an error dictionary
+            var errors = new Dictionary<string, string>();
+
+            // find by username to assert uniqueness
+            var filter = Builders<GymMember>.Filter.Eq("UserName", member.UserName);
+            GetMembersWithFilter(filter);
+            // var result = _members;
+            // if the username is not the same as the current member, and the username already exists
+            if (_members.Count > 0 && _members[0]._id.ToString() != objectId.ToString())
+            {
+                errors.Add("UserName", "Username already exists");
+            }
+
+            // find by email to assert uniqueness
+            filter = Builders<GymMember>.Filter.Eq("Email", member.Email);
+            GetMembersWithFilter(filter);
+            // result = _members;
+            // if the email is not the same as the current member, and the email already exists
+            if (_members.Count > 0 && _members[0]._id.ToString() != objectId.ToString())
+            {
+                errors.Add("Email", "Email already exists");
+            }
+
+            Console.WriteLine(errors);
+            // if there are errors, throw an exception
+            if (errors.Count > 0)
+            {
+                throw new MultipleFieldException(errors);
+            }
+
+            // use the generic method to update the member
+            filter = Builders<GymMember>.Filter.Eq("_id", objectId);
+            var update = Builders<GymMember>.Update.Set("UserName", member.UserName)
+                .Set("Email", member.Email)
+                .Set("FullName", member.FullName)
+                .Set("PhoneNumber", member.PhoneNumber)
+                .Set("Address", member.Address)
+                .Set("DateOfBirth", member.DateOfBirth)
+                .Set("DateJoined", member.DateJoined)
+                .Set("Memberships", member.Memberships)
+                .Set("BioMetrics", member.BioMetrics)
+                .Set("Bills", member.Bills);
+
+            // update the member
+            UpdateMembershipGeneric(filter, update);
+
+        }
+
         // create the membership object
-        public void CreateMembership(ObjectId memberId, Membership membership) {
+        /*public void CreateMembership(ObjectId memberId, Membership membership) {
             // create a new membership
             try {
                 // get the member using method, it will throw an exception if not found
@@ -104,10 +162,10 @@ namespace gym_management_system.Models {
                 Console.WriteLine(e.Message);
                 throw new Exception(e.Message);
             }
-        }
+        }*/
 
         // create the biometric object
-        public void CreateBiometric(ObjectId memberId, BioMetric biometric) {
+        /*public void CreateBiometric(ObjectId memberId, BioMetric biometric) {
             // create a new biometric
             try {
                 // get the member using method, it will throw an exception if not found
@@ -128,10 +186,10 @@ namespace gym_management_system.Models {
                 Console.WriteLine(e.Message);
                 throw new Exception(e.Message);
             }
-        }
+        }*/
 
         // create the bill object
-        public void CreateBill(ObjectId memberId, Bill bill) {
+        /*public void CreateBill(ObjectId memberId, Bill bill) {
             // create a new bill
             try {
                 // get the member using method, it will throw an exception if not found
@@ -152,43 +210,12 @@ namespace gym_management_system.Models {
                 Console.WriteLine(e.Message);
                 throw new Exception(e.Message);
             }
-        }
-
-        // update member info
-        public void UpdateMemberInfo(ObjectId objectId, GymMember member) {
-            // update a member
-            try {
-
-                var dbMember = _member;
-                if (dbMember == null) {
-                    throw new Exception("Member not found");
-                }
- 
-
-                // use the generic method to update the member
-                var filter = Builders<GymMember>.Filter.Eq("_id", objectId);
-                var update = Builders<GymMember>.Update.Set("UserName", member.UserName)
-                    .Set("Email", member.Email)
-                    .Set("FullName", member.FullName)
-                    .Set("PhoneNumber", member.PhoneNumber)
-                    .Set("Address", member.Address)
-                    .Set("DateOfBirth", member.DateOfBirth)
-                    .Set("DateJoined", member.DateJoined)
-                    .Set("Memberships", new List<Membership>{})
-                    .Set("BioMetrics", new List<BioMetric> { })
-                    .Set("Bills", new List<Bill> { });
-
-                UpdateMembershipGeneric(filter, update);
+        }*/
 
 
-            } catch (Exception e) {
-                Console.WriteLine(e.Message);
-                throw new Exception(e.Message);
-            }
-        }
 
         // delete using generic method -----------------------------
-        // delete member
+        /*// delete member
         public void DeleteMember(ObjectId memberId)
         {
             // delete a member
@@ -213,8 +240,8 @@ namespace gym_management_system.Models {
                 throw new Exception(e.Message);
             }
         }
-
-        // delete membership
+*/
+        /*// delete membership
         public void DeleteMembership(ObjectId memberId, ObjectId membershipId) {
             // delete a membership
             try {
@@ -239,9 +266,9 @@ namespace gym_management_system.Models {
                 Console.WriteLine(e.Message);
                 throw new Exception(e.Message);
             }
-        }
+        }*/
 
-        // delete biometric
+        /*// delete biometric
         public void DeleteBiometric(ObjectId memberId, ObjectId biometricId) {
             // delete a biometric
             try {
@@ -267,13 +294,15 @@ namespace gym_management_system.Models {
                 Console.WriteLine(e.Message);
                 throw new Exception(e.Message);
             }
-        }
+        }*/
 
         // update member generic method, using filter and update as parameters
-        public void UpdateMembershipGeneric(FilterDefinition<GymMember> filter, UpdateDefinition<GymMember> update) {
+        public void UpdateMembershipGeneric(FilterDefinition<GymMember> filter, UpdateDefinition<GymMember> update)
+        {
             // create a new membership
-            try {
-                
+            try
+            {
+
                 // create the membership inside the member document
                 var client = new MongoClient(_connection.MONGO_CONN_STRING);
                 var db = client.GetDatabase("gym_management_system");
@@ -282,12 +311,14 @@ namespace gym_management_system.Models {
                 // update the member
                 collection.UpdateOne(filter, update);
 
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e.Message);
                 throw new Exception("Error updating membership");
             }
         }
-        
+
 
 
         // get member and members methods: -------------------------

@@ -73,14 +73,6 @@ namespace gym_management_system.Controllers
 
             ViewBag.IsAuthenticated = true;
             
-            // check if there is an error message in the tempdata
-            if (TempData["error"] != null)
-            {
-                ViewBag.Error = TempData["error"].ToString();
-            } else
-            {
-                ViewBag.Error = "";
-            }
 
             return View();
         }
@@ -153,9 +145,9 @@ namespace gym_management_system.Controllers
             memberManager.GetMemberById(objectId);
 
             // assign the member to the viewbag
-            ViewBag.Member = memberManager.Member;
+            // ViewBag.Member = memberManager.Member;
 
-            return View();
+            return View(memberManager.Member);
         }
 
         // submit edit member object
@@ -169,7 +161,14 @@ namespace gym_management_system.Controllers
                 ViewBag.IsAuthenticated = false;
                 return RedirectToAction("Index", "Home");
             }
+
             ViewBag.IsAuthenticated = true;
+
+            // check validation state
+            if (!ModelState.IsValid)
+            {
+                return View("Edit", gymMember);
+            }
 
             try
             {
@@ -182,20 +181,24 @@ namespace gym_management_system.Controllers
                 // get the member from the database
                 memberManager.GetMemberById(objectId);
 
-                // assign the member to the viewbag
-                ViewBag.Member = memberManager.Member;
-
                 // update the member
                 memberManager.UpdateMemberInfo(objectId, gymMember);
 
                 // redirect to the members page
                 return RedirectToAction("Index", "Member");
             }
+            catch (MultipleFieldException mfe)
+            {
+                foreach (var error in mfe.Errors)
+                {
+                    ModelState.AddModelError(error.Key, error.Value);
+                }
+                return View("Edit", gymMember);
+            }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                TempData["error"] = e.Message;
-                return RedirectToAction("Index", "Home");
+                ModelState.AddModelError("_id", e.Message);
+                return View("Edit", gymMember);
             }
         }
 
@@ -231,7 +234,7 @@ namespace gym_management_system.Controllers
 
 
         // submit delete member object
-        [HttpPost]
+        /*[HttpPost]
         [Route("admin/members/delete/{id}")]
         public ActionResult DeleteSubmit(string id)
         {
@@ -270,7 +273,7 @@ namespace gym_management_system.Controllers
                 TempData["error"] = e.Message;
                 return RedirectToAction("Index", "Home");
             }
-        }
+        }*/
 
         // view member object details
         [HttpGet]
