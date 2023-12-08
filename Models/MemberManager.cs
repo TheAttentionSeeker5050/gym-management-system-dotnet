@@ -90,7 +90,11 @@ namespace gym_management_system.Models {
                 throw new Exception("Member not found");
             }
 
-            GetAllMembers();
+            /*GetAllMembers();*/
+
+            var client = new MongoClient(_connection.MONGO_CONN_STRING);
+            var db = client.GetDatabase("gym_management_system");
+            var collection = db.GetCollection<GymMember>("gymMembers");
 
             // make an error dictionary
             var errors = new Dictionary<string, string>();
@@ -115,7 +119,6 @@ namespace gym_management_system.Models {
                 errors.Add("Email", "Email already exists");
             }
 
-            Console.WriteLine(errors);
             // if there are errors, throw an exception
             if (errors.Count > 0)
             {
@@ -136,8 +139,39 @@ namespace gym_management_system.Models {
                 .Set("Bills", member.Bills);
 
             // update the member
-            UpdateMembershipGeneric(filter, update);
+            collection.UpdateOne(filter, update);
 
+        }
+
+        // delete methods -----------------------------
+        // delete member
+        public void DeleteMember(ObjectId memberId)
+        {
+            // delete a member
+            try
+            {
+                
+
+
+                // use the mongodb driver to delete the member
+                var client = new MongoClient(_connection.MONGO_CONN_STRING);
+                var db = client.GetDatabase("gym_management_system");
+                var collection = db.GetCollection<GymMember>("gymMembers");
+
+                // create filters and update builders
+                var filter = Builders<GymMember>.Filter.Eq("_id", memberId);
+
+                var result = collection.DeleteOne(filter);
+                if (result.DeletedCount == 0)
+                {
+                    throw new Exception("Member not found");
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
         }
 
         // create the membership object
@@ -214,33 +248,8 @@ namespace gym_management_system.Models {
 
 
 
-        // delete using generic method -----------------------------
-        /*// delete member
-        public void DeleteMember(ObjectId memberId)
-        {
-            // delete a member
-            try
-            {
-                // get the member using method, it will throw an exception if not found
-                GetMemberById(memberId);
 
-                // create filters and update builders
-                var filter = Builders<GymMember>.Filter.Eq("_id", memberId);
-                
-                // use the mongodb driver to delete the member
-                var client = new MongoClient(_connection.MONGO_CONN_STRING);
-                var db = client.GetDatabase("gym_management_system");
-                var collection = db.GetCollection<GymMember>("gymMembers");
 
-                collection.DeleteOne(filter);
-
-            } catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                throw new Exception(e.Message);
-            }
-        }
-*/
         /*// delete membership
         public void DeleteMembership(ObjectId memberId, ObjectId membershipId) {
             // delete a membership
@@ -297,7 +306,7 @@ namespace gym_management_system.Models {
         }*/
 
         // update member generic method, using filter and update as parameters
-        public void UpdateMembershipGeneric(FilterDefinition<GymMember> filter, UpdateDefinition<GymMember> update)
+        /*public void UpdateMembershipGeneric(FilterDefinition<GymMember> filter, UpdateDefinition<GymMember> update)
         {
             // create a new membership
             try
@@ -317,7 +326,7 @@ namespace gym_management_system.Models {
                 Console.WriteLine(e.Message);
                 throw new Exception("Error updating membership");
             }
-        }
+        }*/
 
 
 

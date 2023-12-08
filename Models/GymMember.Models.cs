@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -38,6 +40,8 @@ namespace gym_management_system.Models
         [BsonElement(elementName: "PhoneNumber")]
         [BsonRequired]
         [BsonRepresentation(BsonType.String)]
+        // validate phone number with regex
+        [RegularExpression(@"^(\d{9})$", ErrorMessage = "Invalid Phone Number")]
         public string PhoneNumber { get; set; }
 
         [BsonElement(elementName: "Address")]

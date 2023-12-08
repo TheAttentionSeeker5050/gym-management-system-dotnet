@@ -225,16 +225,16 @@ namespace gym_management_system.Controllers
             // get the member from the database
             memberManager.GetMemberById(objectId);
 
-            // assign the member to the viewbag
-            ViewBag.Member = memberManager.Member;
+            // // assign the member to the viewbag
+            // ViewBag.Member = memberManager.Member;
 
-            return View();
+            return View(memberManager.Member);
 
         }
 
 
         // submit delete member object
-        /*[HttpPost]
+        [HttpPost]
         [Route("admin/members/delete/{id}")]
         public ActionResult DeleteSubmit(string id)
         {
@@ -244,6 +244,7 @@ namespace gym_management_system.Controllers
                 ViewBag.IsAuthenticated = false;
                 return RedirectToAction("Index", "Home");
             }
+
             ViewBag.IsAuthenticated = true;
 
             try
@@ -257,8 +258,8 @@ namespace gym_management_system.Controllers
                 // get the member from the database
                 memberManager.GetMemberById(objectId);
 
-                // assign the member to the viewbag
-                ViewBag.Member = memberManager.Member;
+               /* // assign the member to the viewbag
+                ViewBag.Member = memberManager.Member;*/
 
                 // delete the member
                 memberManager.DeleteMember(objectId);
@@ -270,10 +271,10 @@ namespace gym_management_system.Controllers
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                TempData["error"] = e.Message;
-                return RedirectToAction("Index", "Home");
+                // TempData["error"] = e.Message;
+                return View("Delete", id);
             }
-        }*/
+        }
 
         // view member object details
         [HttpGet]
