@@ -39,40 +39,47 @@ namespace gym_management_system.Models {
         // public methods ------------------------------------------
         public void CreateMember(GymMember member) {
             // create a new member
-            try {
-                var client = new MongoClient(_connection.MONGO_CONN_STRING);
-                var db = client.GetDatabase("gym_management_system");
-                var collection = db.GetCollection<GymMember>("gymMembers");
+            var client = new MongoClient(_connection.MONGO_CONN_STRING);
+            var db = client.GetDatabase("gym_management_system");
+            var collection = db.GetCollection<GymMember>("gymMembers");
 
-                // check if email already exists
-                var filter = Builders<GymMember>.Filter.Eq("Email", member.Email);
-                var result = collection.Find(filter).ToList();
-                if (result.Count > 0) {
-                    throw new Exception("Email already exists");
-                }
+                
 
-                // check if username already exists
-                filter = Builders<GymMember>.Filter.Eq("UserName", member.UserName);
-                result = collection.Find(filter).ToList();
-                if (result.Count > 0) {
-                    throw new Exception("Username already exists");
-                }
+            var errors = new Dictionary<string, string>();
 
-                // check if email already exists
-                filter = Builders<GymMember>.Filter.Eq("Email", member.Email);
-                result = collection.Find(filter).ToList();
-                if (result.Count > 0)
-                {
-                    throw new Exception("Email already exists");
-                }
-
-                // insert the member
-                collection.InsertOne(member);
-
-            } catch (Exception e) {
-                Console.WriteLine(e.Message);
-                throw new Exception(e.Message);
+            // find by username to assert uniqueness
+            var filter = Builders<GymMember>.Filter.Eq("UserName", member.UserName);
+            var result = collection.Find(filter).ToList();
+            if (result.Count > 0)
+            {
+                errors.Add("Email", "Email already exists");
             }
+
+            // find by email to assert uniqueness
+            filter = Builders<GymMember>.Filter.Eq("Email", member.Email);
+            result = collection.Find(filter).ToList();
+            if (result.Count > 0)
+            {
+                errors.Add("UserName", "Username already exists");
+            }
+
+            if (errors.Count > 0)
+            {
+                throw new MultipleFieldException(errors);
+            }
+
+            // insert the member
+            collection.InsertOne(member);
+
+            // validate the insert by getting the member
+            GetMemberByEmail(member.Email);
+
+            // if the member is null, throw an exception
+            if (_member == null)
+            {
+                throw new Exception("Error creating member");
+            }
+            
         }
 
         // create the membership object
@@ -399,5 +406,28 @@ namespace gym_management_system.Models {
         }
 
         
+    }
+
+
+    // exception handlers
+    public class CustomException : Exception
+    {
+        // handle unique field exceptions
+        public string FieldName { get; private set; }
+        public CustomException(string fieldName, string message) : base(message)
+        {
+            FieldName = fieldName;
+        }
+    }
+
+    public class MultipleFieldException : Exception
+    {
+        public IDictionary<string, string> Errors { get; private set; }
+
+        public MultipleFieldException(IDictionary<string, string> errors)
+            : base("There are multiple validation errors.")
+        {
+            Errors = errors;
+        }
     }
 }

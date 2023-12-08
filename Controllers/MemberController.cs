@@ -70,6 +70,8 @@ namespace gym_management_system.Controllers
                 ViewBag.IsAuthenticated = false;
                 return RedirectToAction("Index", "Home");
             }
+
+            ViewBag.IsAuthenticated = true;
             
             // check if there is an error message in the tempdata
             if (TempData["error"] != null)
@@ -79,9 +81,6 @@ namespace gym_management_system.Controllers
             {
                 ViewBag.Error = "";
             }
-
-
-            ViewBag.IsAuthenticated = true;
 
             return View();
         }
@@ -99,6 +98,12 @@ namespace gym_management_system.Controllers
             }
             ViewBag.IsAuthenticated = true;
 
+            // check validation state
+            if (!ModelState.IsValid)
+            {
+                return View("Create", gymMember);
+            }
+
             try
             {
                 // create a new member manager
@@ -110,11 +115,18 @@ namespace gym_management_system.Controllers
                 // redirect to the members page
                 return RedirectToAction("Index", "Member");
             }
+            catch (MultipleFieldException mfe)
+            {
+                foreach (var error in mfe.Errors)
+                {
+                    ModelState.AddModelError(error.Key, error.Value);
+                }
+                return View("Create", gymMember);
+            }
             catch (Exception e)
             {
-                // Console.WriteLine(e.Message);
-                TempData["error"] = e.Message;
-                return RedirectToAction("Create", "Member");
+                ModelState.AddModelError("", e.Message);
+                return RedirectToAction("Index", "Home");
             }
         }
 
