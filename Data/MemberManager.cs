@@ -5,9 +5,10 @@ using MongoDB.Driver;
 using static MongoDB.Bson.Serialization.Serializers.SerializerHelper;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Linq;
+using gym_management_system.Models;
 
 
-namespace gym_management_system.Models {
+namespace gym_management_system.Data {
     public class MemberManager {
         // this will CRUD the GymMember document
         // this is a composed document, so we will need to use the mongodb driver
@@ -37,6 +38,10 @@ namespace gym_management_system.Models {
         }
 
         // public methods ------------------------------------------
+        // ---------------------------------------------------------
+
+
+        // create methods ------------------------------------------
         public void CreateMember(GymMember member) {
             // create a new member
             var client = new MongoClient(_connection.MONGO_CONN_STRING);
@@ -80,6 +85,7 @@ namespace gym_management_system.Models {
             
         }
 
+        // update methods -----------------------------------------
         // update member info
         public void UpdateMemberInfo(ObjectId objectId, GymMember member)
         {
@@ -90,7 +96,6 @@ namespace gym_management_system.Models {
                 throw new Exception("Member not found");
             }
 
-            /*GetAllMembers();*/
 
             var client = new MongoClient(_connection.MONGO_CONN_STRING);
             var db = client.GetDatabase("gym_management_system");

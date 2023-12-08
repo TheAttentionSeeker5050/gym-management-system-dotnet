@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using gym_management_system.Models;
+using gym_management_system.Data;
 using MongoDB.Bson;
 
 // import system and enumerables

@@ -16,6 +16,10 @@ using MongoDB.Bson.Serialization.Attributes;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System.Security.Cryptography;
 
+// import the data context managers
+using gym_management_system.Data;
+
+
 namespace gym_management_system.Models
 {
     // this is a model class for the employee user, and this is a data class

@@ -12,17 +12,17 @@
         @* if there is an error, show it *@
         @if (ViewData["error"] != null)
         {
-            <div class="alert alert-danger" role="alert">
-                @ViewData["error"]
-            </div>
+        <div class="alert alert-danger" role="alert">
+            @ViewData["error"]
+        </div>
         }
 
         @* if feedback viewdata, show it as alert success *@
         @if (ViewData["feedback"] != null)
         {
-            <div class="alert alert-success" role="alert">
-                @ViewData["feedback"]
-            </div>
+        <div class="alert alert-success" role="alert">
+            @ViewData["feedback"]
+        </div>
         }
     </div>
 
@@ -55,7 +55,7 @@
 
         <div class="form-group text-start">
             <label for="registerConfirmPassword">Confirm Password</label>
-            <input type="password" class="form-control" id="registerConfirmPassword" placeholder="Confirm Password" asp-for="UserPasswordConfirm"/>
+            <input type="password" class="form-control" id="registerConfirmPassword" placeholder="Confirm Password" asp-for="UserPasswordConfirm" />
             <span class="text-danger field-validation-valid" asp-validation-for="UserPasswordConfirm"></span>
         </div>
 

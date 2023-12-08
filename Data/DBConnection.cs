@@ -2,9 +2,10 @@
 using MongoDB.Bson;
 using System;
 using System.Collections.Generic;
+using gym_management_system.Models;
 
 
-namespace gym_management_system.Models
+namespace gym_management_system.Data
 {
     public class DBConnection
     {
